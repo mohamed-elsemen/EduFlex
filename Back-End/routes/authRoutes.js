@@ -45,6 +45,7 @@ router.post(
       if (value !== req.body.password) {
         throw new Error("Password and Confirmation don't match");
       }
+      return true;
     }),
   ],
   authController.register
