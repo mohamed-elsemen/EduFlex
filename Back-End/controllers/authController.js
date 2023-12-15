@@ -8,10 +8,13 @@ const {
   sendVerificationEmail,
   generateJWT,
   createTokenUser,
+  collectValidationResult,
 } = require('../utils/');
 const throwCustomError = require('../errors/custom-error');
 
 const register = async (req, res, next) => {
+  collectValidationResult(req);
+
   // Protection for admin role (only assigned for first acc or manually from database)
   if (req.body.role === 'admin') {
     throwCustomError('Bad request', 400);
@@ -55,7 +58,7 @@ const register = async (req, res, next) => {
   });
 
   res.status(201).json({
-    msg: 'Success! Please check your email to verify account',
+    message: 'Success! Please check your email to verify account',
   });
 };
 
@@ -109,7 +112,34 @@ const resendOTP = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-  res.send('login user');
+  collectValidationResult(req);
+
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throwCustomError('Could not find a user with this E-mail', 401);
+  }
+
+  const isPasswordCorrect = await user.checkPassword(password);
+  if (!isPasswordCorrect) {
+    throwCustomError(
+      'Wrong password! try again or click forgot password to reset it.',
+      401
+    );
+  }
+
+  if (!user.isVerified) {
+    throwCustomError(
+      'Users have to verify their emails before they can log in.',
+      401
+    );
+  }
+
+  const tokenUser = createTokenUser(user);
+  const token = generateJWT(tokenUser);
+
+  res.status(200).json({ message: 'successfully logged in!', token });
 };
 
 const uploadNationalID = async (req, res, next) => {
