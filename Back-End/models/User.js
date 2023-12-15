@@ -49,6 +49,12 @@ const userSchema = new Schema({
     },
   },
   nationalID: String,
+  otp: String,
+  otpExpiration: Date,
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // reserve the 'this' keyword by using 'function' instead of arrow-function

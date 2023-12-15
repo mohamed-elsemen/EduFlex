@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const fileUpload = require('express-fileupload');
 require('express-async-errors');
 require('dotenv').config();
 
@@ -17,6 +18,7 @@ const app = express();
 app.use(morgan('dev')); // request logger middleware
 app.use(cors()); // to resolve cross-origin resource sharing with front-end
 app.use(express.json());
+app.use(fileUpload());
 
 app.use('/api/v1/auth', authRoutes);
 
