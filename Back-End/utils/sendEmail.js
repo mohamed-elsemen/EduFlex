@@ -6,7 +6,7 @@ const sendEmail = async ({ to, subject, html }) => {
   const transporter = nodemailer.createTransport(nodemailerConfig);
 
   return transporter.sendMail({
-    from: '"EduFlex Team" <foo@example.com>', // sender address
+    from: '"EduFlex Team" <eduflexteam@outlook.com>', // sender address
     to,
     subject,
     html,

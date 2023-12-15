@@ -46,7 +46,7 @@ const generateVerifyEmailTemplate = (otp, name) => {
   </head>
       <body>
       <div class="container">
-        <img class="logo" src="https://i.postimg.cc/gjXVLTbL/Edu-Flex-Logo.png" alt="Logo" />
+        <img class="logo" src="https://i.postimg.cc/0QcM8JQs/Edu-Flex-Logo.png" alt="Logo" />
         <h3 class="subject">Email Verification</h3>
         <div class="message">
         <h4> Hello, ${name}</h4>

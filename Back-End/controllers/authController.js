@@ -87,7 +87,7 @@ const resendOTP = async (req, res, next) => {
   const user = await User.findOne({ email });
 
   if (!user || user.isVerified) {
-    throwCustomError('Invalid request or user already verified.', 400)
+    throwCustomError('Invalid request or user already verified.', 400);
   }
 
   const otp = crypto.randomInt(100000, 999999).toString(); // 6-digits verification code
@@ -102,6 +102,7 @@ const resendOTP = async (req, res, next) => {
     name: user.firstName,
     email: user.email,
     otp,
+    resend: true,
   });
 
   res.status(200).json({ message: 'New OTP sent successfully.' });
