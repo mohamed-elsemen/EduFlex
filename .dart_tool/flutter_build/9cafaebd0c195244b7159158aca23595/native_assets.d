@@ -1,1 +1,0 @@
- C:\\Users\\win\ 10\\StudioProjects\\edu_flex\\.dart_tool\\flutter_build\\9cafaebd0c195244b7159158aca23595\\native_assets.yaml: 
