@@ -14,17 +14,14 @@ const throwCustomError = require('../errors/custom-error');
 
 const register = async (req, res, next) => {
   collectValidationResult(req);
-
+  
+  const { role, education, level, grade, nationalID } = req.body;
+  
   // Protection for admin role (only assigned for first acc or manually from database)
-  if (req.body.role === 'admin') {
+  const isFirstAccount = (await User.countDocuments()) === 0;
+  if (!isFirstAccount && role === 'admin') {
     throwCustomError('Bad request', 400);
   }
-
-  // First account only is admin!
-  const isFirstAccount = (await User.countDocuments()) === 0;
-  const role = isFirstAccount ? 'admin' : req.body.role;
-
-  const { education, level, grade, nationalID } = req.body;
 
   // handling required field for instructor role
   if (
@@ -49,7 +46,7 @@ const register = async (req, res, next) => {
   const otp = crypto.randomInt(100000, 999999).toString(); // 6-digits verification code
   const otpExpiration = new Date(Date.now() + 3600000); // expires in 1hr
 
-  const user = await User.create({ ...req.body, role, otp, otpExpiration });
+  const user = await User.create({ ...req.body, otp, otpExpiration });
 
   await sendVerificationEmail({
     name: user.firstName,
