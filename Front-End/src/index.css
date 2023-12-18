@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.lines-shield::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 50px;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #505050;
+}
+.lines-shield::before {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 50px;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #505050;
+}
+.character {
+  border: 1px solid #c1c1c1;
+  font-size: 20px;
+  border-radius: 8px;
+
+  /* light theme */
+  color: #272729;
+  background-color: #f5f5f5;
+}
+.character--selected {
+  outline: 2px solid #00bf63;
+}
