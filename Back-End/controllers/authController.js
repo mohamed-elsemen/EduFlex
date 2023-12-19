@@ -204,7 +204,7 @@ const uploadNationalID = async (req, res, next) => {
     throwCustomError('No file uploaded', 400);
   }
 
-  const nationalIdImage = req.files.image;
+  const nationalIdImage = req.files.idImage;
   if (!nationalIdImage.mimetype.startsWith('image')) {
     throwCustomError('Please upload an image', 400);
   }

@@ -6,7 +6,7 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.post('/uploadNationalID', authController.uploadNationalID);
+router.post('/upload-national-id', authController.uploadNationalID);
 
 router.post(
   '/register',
