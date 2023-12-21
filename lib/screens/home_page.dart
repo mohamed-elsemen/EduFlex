@@ -6,7 +6,17 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      body: ListView(
+        children: const [
+          Row(
+            children: [
+              CircleAvatar(
+                child: Icon(Icons.account_circle_outlined),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }
