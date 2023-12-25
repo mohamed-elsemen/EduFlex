@@ -14,6 +14,7 @@ class HomePage extends StatelessWidget {
                 child: Icon(Icons.account_circle_outlined),
               )
             ],
+git rebase origin/your_branch
           )
         ],
       ),
