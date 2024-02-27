@@ -46,14 +46,14 @@ const VerificationPage = () => {
       <h2 className="text-center text-[#6A6A6A] mb-8 ">
         {" "}
         The code send to your{" "}
-        {maskEmail(originalEmail || "ahmedanas@yahoo.com")}{" "}
+        {maskEmail(originalEmail)}{" "}
       </h2>
       <VerificationInput
         placeholder=""
         autoFocus
         validChars="0-9"
         inputProps={{ inputMode: "numeric" }}
-        length={4}
+        length={6}
         classNames={{
           container: "mx-auto",
           character: "character",
@@ -70,13 +70,13 @@ const VerificationPage = () => {
           timerReset ? "text-[#00BF63] cursor-pointer" : "text-[#6A6A6A]"
         } my-8 text-center`}
       >
-        {timerReset ? "Reasend " : "Reasend in "} {!!timer && timer}
+        {timerReset ? "Resend " : "Resend in "} {!!timer && timer}
       </h2>
       <button
         type="submit"
-        disabled={code.length !== 4}
+        disabled={code.length !== 6}
         className={`bg-[#00BF63]  text-white py-3 text-base rounded-xl w-full  ${
-          code.length !== 4 ? "opacity-50" : "opacity-100"
+          code.length !== 6 ? "opacity-50" : "opacity-100"
         }`}
       >
         Verify

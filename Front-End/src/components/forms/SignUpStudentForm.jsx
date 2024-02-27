@@ -184,7 +184,7 @@ const SignUpStudentForm = () => {
               value={validation.values.confirmPassword}
               onChange={validation.handleChange}
               onBlur={validation.handleBlur}
-              placeholder="Confirem password"
+              placeholder="Confirm password"
               className={inputClasses}
             />
             <div
