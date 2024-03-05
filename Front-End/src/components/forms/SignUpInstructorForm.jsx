@@ -70,7 +70,7 @@ const SignUpInstructorForm = () => {
 
   return (
     <div className="  max-w-[500px] mx-auto">
-      <h1 className="font-bold text-4xl text-center"> SIGN UP </h1>
+      <h1 className="font-bold text-[#515151] text-4xl text-center"> SIGN UP </h1>
       <form
         onSubmit={validation.handleSubmit}
         className=" flex flex-col gap-4 mt-9 "
