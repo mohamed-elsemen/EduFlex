@@ -6,7 +6,7 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.post('/uploadNationalID', authController.uploadNationalID);
+router.post('/upload-national-id', authController.uploadNationalID);
 
 router.post(
   '/register',
@@ -53,7 +53,15 @@ router.post(
 
 router.post('/verify-email', authController.verifyEmail);
 
-router.post('/resend-otp', authController.resendOTP);
+router.post(
+  '/resend-otp',
+  body('email')
+    .trim()
+    .isEmail()
+    .withMessage('please provide a valid E-mail')
+    .normalizeEmail(),
+  authController.resendOTP
+);
 
 router.post(
   '/login',
@@ -62,6 +70,34 @@ router.post(
     body('password', 'Password must not be empty').trim().notEmpty(),
   ],
   authController.login
+);
+
+router.post(
+  '/forgot-password',
+  body('email')
+    .trim()
+    .isEmail()
+    .withMessage('please provide a valid E-mail')
+    .normalizeEmail(),
+  authController.forgotPassword
+);
+
+router.post(
+  '/reset-password',
+  body('newPassword')
+    .trim()
+    .isLength({ min: 8 })
+    .withMessage('password must be at least 8 characters')
+    // .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/) // min-length of 8 characters and at least one letter and one number!
+    .matches(/^(?=.*[A-Za-z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/) // this one will apply the above and also accept special characters
+    .withMessage('password must contain at least 1 letter and 1 number'),
+  body('confirmNewPassword').custom((value, { req }) => {
+    if (value !== req.body.newPassword) {
+      throw new Error("Password and Confirmation don't match");
+    }
+    return true;
+  }),
+  authController.resetPassword
 );
 
 module.exports = router;

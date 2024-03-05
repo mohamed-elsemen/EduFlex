@@ -1,61 +1,68 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const userSchema = new Schema({
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true, // technically, this isn't a validator..this is just checking for the index
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    enum: {
-      values: ['admin', 'instructor', 'student'],
-      message: '{VALUE} is not supported',
+const userSchema = new Schema(
+  {
+    firstName: {
+      type: String,
+      required: true,
     },
-    required: true,
-  },
-  education: {
-    type: String,
-    enum: {
-      values: ['General', 'Special', 'Graduated'],
-      message: '{VALUE} is not supported',
+    lastName: {
+      type: String,
+      required: true,
     },
-  },
-  level: {
-    type: String,
-    enum: {
-      values: ['Primary stage', 'Middle school', 'High school', 'University'],
-      message: '{VALUE} is not supported',
+    email: {
+      type: String,
+      required: true,
+      unique: true, // technically, this isn't a validator..this is just checking for the index
     },
-  },
-  grade: {
-    type: String,
-    enum: {
-      values: ['First grade', 'Second grade', 'Third grade'],
-      message: '{VALUE} is not supported',
+    password: {
+      type: String,
+      required: true,
     },
+    role: {
+      type: String,
+      enum: {
+        values: ['Admin', 'Instructor', 'Student'],
+        message: '{VALUE} is not supported',
+      },
+      required: true,
+    },
+    education: {
+      type: String,
+      enum: {
+        values: ['General', 'Special', 'Graduated'],
+        message: '{VALUE} is not supported',
+      },
+    },
+    level: {
+      type: String,
+      enum: {
+        values: ['Primary stage', 'Middle school', 'High school', 'University'],
+        message: '{VALUE} is not supported',
+      },
+    },
+    grade: {
+      type: String,
+      enum: {
+        values: ['First grade', 'Second grade', 'Third grade'],
+        message: '{VALUE} is not supported',
+      },
+    },
+    nationalID: String,
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    otp: String,
+    otpExpiration: Date,
+    resetPwOtp: String,
+    resetPwOtpExpiration: Date,
   },
-  nationalID: String,
-  otp: String,
-  otpExpiration: Date,
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 // reserve the 'this' keyword by using 'function' instead of arrow-function
 userSchema.pre('save', async function () {

@@ -1,30 +1,30 @@
 const path = require('path');
-const crypto = require('crypto');
 
 const { v4: uuidv4 } = require('uuid');
 
 const User = require('../models/User');
 const {
   sendVerificationEmail,
-  generateJWT,
+  sendResetPasswordEmail,
+  sendAcknowledgementEmail,
   createTokenUser,
+  generateJWT,
   collectValidationResult,
+  generateOTP,
+  verifyOTP,
 } = require('../utils/');
 const throwCustomError = require('../errors/custom-error');
 
 const register = async (req, res, next) => {
   collectValidationResult(req);
 
+  const { role, education, level, grade, nationalID } = req.body;
+
   // Protection for admin role (only assigned for first acc or manually from database)
-  if (req.body.role === 'admin') {
+  const isFirstAccount = (await User.countDocuments()) === 0;
+  if (!isFirstAccount && role === 'admin') {
     throwCustomError('Bad request', 400);
   }
-
-  // First account only is admin!
-  const isFirstAccount = (await User.countDocuments()) === 0;
-  const role = isFirstAccount ? 'admin' : req.body.role;
-
-  const { education, level, grade, nationalID } = req.body;
 
   // handling required field for instructor role
   if (
@@ -46,10 +46,10 @@ const register = async (req, res, next) => {
     );
   }
 
-  const otp = crypto.randomInt(100000, 999999).toString(); // 6-digits verification code
-  const otpExpiration = new Date(Date.now() + 3600000); // expires in 1hr
+  // generate OTP with expiration time of 1 hr
+  const { otp, otpExpiration } = generateOTP(3600000);
 
-  const user = await User.create({ ...req.body, role, otp, otpExpiration });
+  const user = await User.create({ ...req.body, otp, otpExpiration });
 
   await sendVerificationEmail({
     name: user.firstName,
@@ -70,11 +70,11 @@ const verifyEmail = async (req, res, next) => {
     throwCustomError('Invalid request or user already verified.', 400);
   }
 
-  if (user.otp !== otp || user.otpExpiration < new Date()) {
-    throwCustomError('Invalid OTP or OTP expired.', 400);
-  }
+  verifyOTP({ user, otp }); // validate OTP sent to user
 
   user.isVerified = true;
+  user.otp = undefined;
+  user.otpExpiration = undefined;
   await user.save();
 
   // Generate JWT token for authenticated access
@@ -93,8 +93,8 @@ const resendOTP = async (req, res, next) => {
     throwCustomError('Invalid request or user already verified.', 400);
   }
 
-  const otp = crypto.randomInt(100000, 999999).toString(); // 6-digits verification code
-  const otpExpiration = new Date(Date.now() + 3600000); // expires in 1hr
+  // generate OTP with expiration time of 1 hr
+  const { otp, otpExpiration } = generateOTP(3600000);
 
   user.otp = otp;
   user.otpExpiration = otpExpiration;
@@ -142,12 +142,69 @@ const login = async (req, res, next) => {
   res.status(200).json({ message: 'successfully logged in!', token });
 };
 
+const forgotPassword = async (req, res, next) => {
+  collectValidationResult(req);
+
+  const { email } = req.body;
+
+  // Save the resetPwOtp and its expiration time in the user's document
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  // generate resetPwOtp with expiration time of 10 mins = 10 * 60 * 1000 ms
+  const { otp: resetPwOtp, otpExpiration: resetPwOtpExpiration } =
+    generateOTP(600000);
+
+  user.resetPwOtp = resetPwOtp;
+  user.resetPwOtpExpiration = resetPwOtpExpiration;
+  await user.save();
+
+  // Send resetPwOtp via email
+  await sendResetPasswordEmail({
+    name: user.firstName,
+    email: user.email,
+    resetPwOtp,
+  });
+
+  res
+    .status(200)
+    .json({ message: 'Please check your email for reset password otp' });
+};
+
+const resetPassword = async (req, res, next) => {
+  collectValidationResult(req);
+
+  const { email, resetPwOtp, newPassword } = req.body;
+
+  // Find the user by email and check the resetPwOtp and its expiration time
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  verifyOTP({ user, otp: resetPwOtp, reset: true });
+
+  // Update user's password and clear OTP fields
+  user.password = newPassword; // hashing is done pre-save in userSchema
+  user.resetPwOtp = undefined;
+  user.resetPwOtpExpiration = undefined;
+  await user.save();
+
+  await sendAcknowledgementEmail({ name: user.firstName, email: user.email });
+
+  return res.status(200).json({ message: 'Password updated successfully' });
+};
+
 const uploadNationalID = async (req, res, next) => {
   if (!req.files) {
     throwCustomError('No file uploaded', 400);
   }
 
-  const nationalIdImage = req.files.image;
+  const nationalIdImage = req.files.idImage;
   if (!nationalIdImage.mimetype.startsWith('image')) {
     throwCustomError('Please upload an image', 400);
   }
@@ -165,4 +222,12 @@ const uploadNationalID = async (req, res, next) => {
   res.status(200).json({ nationalID: `uploads/${imageName}` });
 };
 
-module.exports = { register, verifyEmail, resendOTP, login, uploadNationalID };
+module.exports = {
+  register,
+  verifyEmail,
+  resendOTP,
+  login,
+  forgotPassword,
+  resetPassword,
+  uploadNationalID,
+};
