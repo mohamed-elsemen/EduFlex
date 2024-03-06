@@ -140,7 +140,7 @@ const LoginForm = () => {
           {loading ? ". . ." : "Log In"}
         </button>
       </form>
-      <Link to="/forget-password" className="flex-1">
+      <Link to="/forgot-password" className="flex-1">
             
       <h3 className="text-[#6A6A6A] text-center text-base my-4 cursor-pointer">
         Forgot password?

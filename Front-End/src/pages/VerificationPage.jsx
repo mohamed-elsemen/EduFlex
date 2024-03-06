@@ -43,7 +43,7 @@ const VerificationPage = () => {
 
   return (
     <div className=" pt-24 max-w-[500px] mx-auto">
-      <button onClick={() => navigate("/forget-password")} className="absolute top-[100px] left-[120px]">
+      <button onClick={() => navigate("/forgot-password")} className="absolute top-[100px] left-[120px]">
         <img src={backImage} alt="Back" className="h-8 w-8"/>
       </button>
       <div className="absolute top-100px left-70px"></div>

@@ -28,7 +28,7 @@ const SignUpStudentForm = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      eduction: "",
+      education: "",
       stage: "",
       level: "",
     },
@@ -44,7 +44,7 @@ const SignUpStudentForm = () => {
       confirmPassword: Yup.string()
         .required("Please confirm your Password")
         .oneOf([Yup.ref("password")], "Password mismatch"),
-      eduction: Yup.number().required("Please enter your eduction"),
+      education: Yup.number().required("Please enter your education"),
       stage: Yup.number().required("Please enter your stage"),
       level: Yup.number().required("Please enter your level"),
     }),
@@ -247,25 +247,25 @@ const SignUpStudentForm = () => {
         </div>
         <div>
           <select
-            name="eduction"
+            name="education"
             className={` ${inputClasses} w-full`}
-            value={validation.values.eduction}
+            value={validation.values.education}
             onChange={validation.handleChange}
           >
             <option value="" disabled hidden>
-              Eduction
+              Education
             </option>
             <option value="1">General</option>
             <option value="2">Special</option>
             <option value="3">Graduated</option>
           </select>
-          {validation.touched.eduction && validation.errors.eduction ? (
+          {validation.touched.education && validation.errors.education ? (
             <h2 className="text-red-700 mt-1" type="invalid">
-              {validation.errors.eduction}
+              {validation.errors.education}
             </h2>
           ) : null}
         </div>
-        {validation.values.eduction === "1" || validation.values.eduction === "2" ? (
+        {validation.values.education === "1" || validation.values.education === "2" ? (
           <>
             <div>
               <select
