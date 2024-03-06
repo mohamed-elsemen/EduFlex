@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import VerificationInput from "react-verification-input";
+import backImage from '../assets/back.png';
 
 const VerificationPage = () => {
   const [timer, setTimer] = useState(60);
   const [timerReset, setTimerReset] = useState(false);
   const [code, setCode] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prev) => {
@@ -40,6 +43,10 @@ const VerificationPage = () => {
 
   return (
     <div className=" pt-24 max-w-[500px] mx-auto">
+      <button onClick={() => navigate("/forget-password")} className="absolute top-[100px] left-[120px]">
+        <img src={backImage} alt="Back" className="h-8 w-8"/>
+      </button>
+      <div className="absolute top-100px left-70px"></div>
       <h1 className="font-bold text-4xl text-center mb-6">
         Verification Code{" "}
       </h1>

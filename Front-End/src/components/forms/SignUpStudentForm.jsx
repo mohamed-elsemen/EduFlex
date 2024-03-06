@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import SocialMediaLogin from "../SocialMediaLogin";
 import { useNavigate } from "react-router-dom";
+import backImage from '../../assets/back.png';
 
 const SignUpStudentForm = () => {
   const navigate = useNavigate();
@@ -56,6 +57,10 @@ const SignUpStudentForm = () => {
 
   return (
     <div className="  max-w-[500px] mx-auto">
+      <button onClick={() => navigate("/")} className="absolute top-[100px] left-[120px]">
+        <img src={backImage} alt="Back" className="h-8 w-8"/>
+      </button>
+      <div className="absolute top-100px left-70px"></div>
       <h1 className="font-bold text-[#515151] text-4xl text-center"> SIGN UP </h1>
       <form
         onSubmit={validation.handleSubmit}
