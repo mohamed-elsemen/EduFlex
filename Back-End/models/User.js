@@ -35,21 +35,39 @@ const userSchema = new Schema(
         message: '{VALUE} is not supported',
       },
     },
-    level: {
+    stage: {
       type: String,
       enum: {
         values: ['Primary stage', 'Middle school', 'High school', 'University'],
         message: '{VALUE} is not supported',
       },
     },
-    grade: {
+    level: {
       type: String,
       enum: {
-        values: ['First grade', 'Second grade', 'Third grade'],
+        values: ['Level one', 'Level two', 'Level three'],
         message: '{VALUE} is not supported',
       },
     },
     nationalID: String,
+    enrolledCourses: [
+      {
+        course: {
+          type: Schema.Types.ObjectId,
+          ref: 'Course',
+        },
+        enrollmentDate: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    wishList: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Course',
+      },
+    ],
     isVerified: {
       type: Boolean,
       default: false,

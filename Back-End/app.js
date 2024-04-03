@@ -8,6 +8,7 @@ require('dotenv').config();
 
 // routers
 const authRoutes = require('./routes/authRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 // 404 and error handler middlewares
 const notFound = require('./middleware/not-found');
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(fileUpload());
 
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/reviews', reviewRoutes);
 
 app.use(notFound); // catch-all route
 app.use(errorHandler); // all errors will be forwarded to this middleware
