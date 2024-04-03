@@ -5,7 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import StudentSignUpPage from "./pages/StudentSignUpPage";
 import InstructorSignUpPage from "./pages/InstructorSignUpPage";
 import VerificationPage from "./pages/VerificationPage";
-import ForgetPasswordPage from "./pages/ForgetPasswordPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
 function App() {
   return (
@@ -23,8 +23,8 @@ function App() {
           ></Route>
           <Route path="verification" element={<VerificationPage />}></Route>
           <Route
-            path="forget-password"
-            element={<ForgetPasswordPage />}
+            path="forgot-password"
+            element={<ForgotPasswordPage />}
           ></Route>
         </Route>
       </Routes>

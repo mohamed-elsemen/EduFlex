@@ -46,7 +46,7 @@ const LoginForm = () => {
   });
   return (
     <div className="  max-w-[500px] mx-auto">
-      <h1 className="font-bold text-4xl text-center"> LOG IN </h1>
+      <h1 className="font-bold text-[#515151] text-4xl text-center"> LOG IN </h1>
       <form
         onSubmit={validation.handleSubmit}
         className=" flex flex-col gap-4 mt-9 "
@@ -137,10 +137,10 @@ const LoginForm = () => {
             loading ? "opacity-50" : "opacity-100"
           }`}
         >
-          {loading ? ". . ." : "Log in"}
+          {loading ? ". . ." : "Log In"}
         </button>
       </form>
-      <Link to="/forget-password" className="flex-1">
+      <Link to="/forgot-password" className="flex-1">
             
       <h3 className="text-[#6A6A6A] text-center text-base my-4 cursor-pointer">
         Forgot password?

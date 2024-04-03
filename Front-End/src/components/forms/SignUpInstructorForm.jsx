@@ -7,6 +7,7 @@ import Id from "../../assets/id.png";
 import IdFilled from "../../assets/id-filled.png";
 import SocialMediaLogin from "../SocialMediaLogin";
 import { useNavigate } from "react-router-dom";
+import backImage from '../../assets/back.png';
 
 const SignUpInstructorForm = () => {
   const navigate = useNavigate();
@@ -70,7 +71,11 @@ const SignUpInstructorForm = () => {
 
   return (
     <div className="  max-w-[500px] mx-auto">
-      <h1 className="font-bold text-4xl text-center"> SIGN UP </h1>
+      <button onClick={() => navigate("/")} className="absolute top-[100px] left-[120px]">
+        <img src={backImage} alt="Back" className="h-8 w-8"/>
+      </button>
+      <div className="absolute top-100px left-70px"></div>
+      <h1 className="font-bold text-[#515151] text-4xl text-center"> SIGN UP </h1>
       <form
         onSubmit={validation.handleSubmit}
         className=" flex flex-col gap-4 mt-9 "
@@ -202,7 +207,7 @@ const SignUpInstructorForm = () => {
               value={validation.values.confirmPassword}
               onChange={validation.handleChange}
               onBlur={validation.handleBlur}
-              placeholder="Confirem password"
+              placeholder="Confirm password"
               className={inputClasses}
             />
             <div
