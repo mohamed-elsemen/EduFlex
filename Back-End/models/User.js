@@ -50,18 +50,18 @@ const userSchema = new Schema(
       },
     },
     nationalID: String,
-    enrolledCourses: [
-      {
-        course: {
-          type: Schema.Types.ObjectId,
-          ref: 'Course',
-        },
-        enrollmentDate: {
-          type: Date,
-          default: Date.now,
-        },
-      },
-    ],
+    // enrolledCourses: [
+    //   {
+    //     course: {
+    //       type: Schema.Types.ObjectId,
+    //       ref: 'Course',
+    //     },
+    //     enrollmentDate: {
+    //       type: Date,
+    //       default: Date.now,
+    //     },
+    //   },
+    // ],
     wishList: [
       {
         type: Schema.Types.ObjectId,

@@ -53,7 +53,6 @@ const courseSchema = new Schema(
     },
     stage: {
       type: String,
-      required: true,
       enum: {
         values: ['Primary stage', 'Middle school', 'High school', 'University'],
         message: '{VALUE} is not supported',
@@ -61,7 +60,6 @@ const courseSchema = new Schema(
     },
     level: {
       type: String,
-      required: true,
       enum: {
         values: ['Level one', 'Level two', 'Level three'],
         message: '{VALUE} is not supported',
@@ -69,7 +67,6 @@ const courseSchema = new Schema(
     },
     term: {
       type: String,
-      required: true,
       enum: {
         values: ['First term', 'Second term'],
         message: '{VALUE} is not supported',
@@ -122,6 +119,18 @@ const courseSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+    enrollments: [
+      {
+        studentId: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+        enrollmentDate: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     approvedByAdmin: {
       type: Boolean,
       default: false,

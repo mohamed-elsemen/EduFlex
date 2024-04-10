@@ -1,4 +1,4 @@
-const Course = require('../models/Course');
+const { Course } = require('../models/Course');
 const Review = require('../models/Review');
 const throwCustomError = require('../errors/custom-error');
 const { collectValidationResult } = require('../utils');
@@ -6,11 +6,26 @@ const { collectValidationResult } = require('../utils');
 const createReview = async (req, res, next) => {
   collectValidationResult(req);
   const { course: courseId } = req.body;
-  const isValidCourse = await Course.findById(courseId);
-  if (!isValidCourse) {
+  const targetCourse = await Course.findById(courseId);
+  if (!targetCourse) {
     throwCustomError(`Could not find a course with ID: ${courseId}`, 404);
   }
-  const reviewData = { ...req.body, user: req.user.userId };
+
+  const { userId, role } = req.user;
+
+  if (role !== 'Student') {
+    throwCustomError('Only students can create reviews', 403);
+  }
+
+  const isEnrolled = targetCourse.enrollments.find((enrollment) =>
+    enrollment.studentId.equals(userId)
+  );
+
+  if (!isEnrolled) {
+    throwCustomError('You are not enrolled in this course', 403);
+  }
+
+  const reviewData = { ...req.body, user: userId };
   const review = await Review.create(reviewData);
   res.status(201).json({ review });
 };
