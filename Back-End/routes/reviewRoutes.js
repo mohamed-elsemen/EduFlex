@@ -1,7 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 
-const { authenticateUser } = require('../middleware/auth');
+const { authenticateUser, authorizeRoles } = require('../middleware/auth');
 const reviewController = require('../controllers/reviewController');
 const Review = require('../models/Review');
 
@@ -11,7 +11,7 @@ router
   .route('/')
   .get(reviewController.getAllReviews)
   .post(
-    authenticateUser,
+    [authenticateUser, authorizeRoles('Student')],
     [
       body('rating', 'rating must be a number between 1 and 5').isFloat({
         min: 1,

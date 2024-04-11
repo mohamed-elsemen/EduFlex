@@ -11,16 +11,10 @@ const createReview = async (req, res, next) => {
     throwCustomError(`Could not find a course with ID: ${courseId}`, 404);
   }
 
-  const { userId, role } = req.user;
-
-  if (role !== 'Student') {
-    throwCustomError('Only students can create reviews', 403);
-  }
-
+  const { userId } = req.user;
   const isEnrolled = targetCourse.enrollments.find((enrollment) =>
     enrollment.studentId.equals(userId)
   );
-
   if (!isEnrolled) {
     throwCustomError('You are not enrolled in this course', 403);
   }
