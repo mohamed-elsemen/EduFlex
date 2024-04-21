@@ -8,6 +8,8 @@ require('dotenv').config();
 
 // routers
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+const courseRoutes = require('./routes/courseRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 
 // 404 and error handler middlewares
@@ -22,6 +24,8 @@ app.use(express.json());
 app.use(fileUpload());
 
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/courses', courseRoutes);
 app.use('/api/v1/reviews', reviewRoutes);
 
 app.use(notFound); // catch-all route

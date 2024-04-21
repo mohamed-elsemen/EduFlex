@@ -18,32 +18,34 @@ const throwCustomError = require('../errors/custom-error');
 const register = async (req, res, next) => {
   collectValidationResult(req);
 
-  const { role, education, level, grade, nationalID } = req.body;
+  const { role, education, stage, level, nationalID } = req.body;
 
   // Protection for admin role (only assigned for first acc or manually from database)
   const isFirstAccount = (await User.countDocuments()) === 0;
-  if (!isFirstAccount && role === 'admin') {
+  if (!isFirstAccount && role === 'Admin') {
     throwCustomError('Bad request', 400);
   }
 
   // handling required field for instructor role
   if (
-    role === 'instructor' &&
+    role === 'Instructor' &&
     (!nationalID || nationalID.trim().length === 0)
   ) {
     throwCustomError('National ID is a required field for instructors!', 422);
   }
 
   // handling required fields for student role
-  if (role === 'student' && !education) {
+  if (role === 'Student' && !education) {
     throwCustomError('Education is a required field for students!', 422);
   }
 
-  if (role === 'student' && education !== 'Graduated' && !(level || grade)) {
-    throwCustomError(
-      'Level of Education and Grade fields are required for undergrads!',
-      422
-    );
+  if (role === 'Student' && education !== 'Graduated' && (!stage || !level)) {
+    if (stage !== 'University') {
+      throwCustomError(
+        'Stage and Level of Education fields are required for undergrads!',
+        422
+      );
+    }
   }
 
   // generate OTP with expiration time of 1 hr

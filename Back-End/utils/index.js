@@ -3,6 +3,11 @@ const {
   sendResetPasswordEmail,
   sendAcknowledgementEmail,
 } = require('./sendEmails');
+const {
+  validateNameAndEmail,
+  validatePassword,
+  normalizeUserEmail,
+} = require('./validateUserData');
 const { generateJWT, verifyJWT } = require('./jwt');
 const { generateOTP, verifyOTP } = require('./otp');
 const createTokenUser = require('./createTokenUser');
@@ -18,4 +23,7 @@ module.exports = {
   collectValidationResult,
   generateOTP,
   verifyOTP,
+  validateNameAndEmail,
+  validatePassword,
+  normalizeUserEmail,
 };

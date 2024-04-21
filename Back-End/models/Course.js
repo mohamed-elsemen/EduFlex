@@ -131,9 +131,10 @@ const courseSchema = new Schema(
         },
       },
     ],
-    approvedByAdmin: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      enum: ['Pending', 'Accepted', 'Rejected'],
+      default: 'Pending',
     },
   },
   {
