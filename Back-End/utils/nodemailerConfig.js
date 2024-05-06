@@ -4,8 +4,8 @@ const nodemailerConfig = {
   // host: 'smtp.ethereal.email',
   // port: 587,
   // auth: {
-  //   user: 'dwight.simonis56@ethereal.email',
-  //   pass: 'jECznVtJfZYQY5xsB3'
+  //   user: 'lizzie.beahan55@ethereal.email',
+  //   pass: 'zuY4JkVe8Sx4gfjCK9'
   // }
   
   // for production we use outlook

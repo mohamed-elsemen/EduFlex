@@ -8,7 +8,15 @@ const videoSchema = new Schema({
     type: String,
     required: true,
   },
-  url: {
+  formattedDuration: {
+    type: String,
+    required: true,
+  },
+  isPreview: {
+    type: Boolean,
+    default: false,
+  },
+  videoUrl: {
     type: String,
     required: true,
   },
@@ -20,12 +28,7 @@ const sectionSchema = new Schema({
     type: String,
     required: true,
   },
-  videos: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Video',
-    },
-  ],
+  videos: [videoSchema],
 });
 
 // Define a schema for Course
@@ -33,21 +36,11 @@ const courseSchema = new Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    keywords: [{ type: String, required: true }],
-    subject: { type: String, required: true },
-    thumbnail: { type: String, required: true },
-    language: {
+    education: {
       type: String,
       required: true,
       enum: {
-        values: ['Arabic', 'English'],
-        message: '{VALUE} is not supported',
-      },
-    },
-    education: {
-      type: String,
-      enum: {
-        values: ['General', 'Special', 'Graduated'],
+        values: ['General', 'Special', 'Graduated'], // Graduated = skills
         message: '{VALUE} is not supported',
       },
     },
@@ -65,6 +58,14 @@ const courseSchema = new Schema(
         message: '{VALUE} is not supported',
       },
     },
+    language: {
+      type: String,
+      required: true,
+      enum: {
+        values: ['Arabic', 'English'],
+        message: '{VALUE} is not supported',
+      },
+    },
     term: {
       type: String,
       enum: {
@@ -72,10 +73,7 @@ const courseSchema = new Schema(
         message: '{VALUE} is not supported',
       },
     },
-    price: {
-      type: Number,
-      required: true,
-    },
+    subject: String,
     courseAvailability: {
       type: String,
       required: true,
@@ -101,6 +99,18 @@ const courseSchema = new Schema(
         message: '{VALUE} is not supported',
       },
     },
+    keywords: [
+      {
+        type: String,
+        // required: true
+      },
+    ],
+    price: {
+      type: Number,
+      required: true,
+    },
+    imageUrl: { type: String, required: true },
+    sections: [sectionSchema],
     avgRating: {
       type: Number,
       default: 0,
@@ -109,12 +119,11 @@ const courseSchema = new Schema(
       type: Number,
       default: 0,
     },
-    sections: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Section',
-      },
-    ],
+    status: {
+      type: String,
+      enum: ['Pending', 'Accepted', 'Rejected'],
+      default: 'Pending',
+    },
     instructor: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -131,11 +140,6 @@ const courseSchema = new Schema(
         },
       },
     ],
-    status: {
-      type: String,
-      enum: ['Pending', 'Accepted', 'Rejected'],
-      default: 'Pending',
-    },
   },
   {
     timestamps: true,
@@ -158,9 +162,4 @@ courseSchema.pre('deleteOne', { document: true }, async function () {
   await Review.deleteMany({ course: this._id });
 });
 
-// Create models based on the schemas
-const Video = model('Video', videoSchema);
-const Section = model('Section', sectionSchema);
-const Course = model('Course', courseSchema);
-
-module.exports = { Video, Section, Course };
+module.exports = model('Course', courseSchema);

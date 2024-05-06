@@ -34,25 +34,47 @@ const getSingleUser = async (req, res, next) => {
 };
 
 const deleteUser = async (req, res, next) => {
-  const { userId } = req.params;
+  collectValidationResult(req);
+
+  const {
+    params: { userId },
+    user: { role },
+  } = req;
+
   // Admin can delete any user, a user can only delete his own account
-  if (req.user.role !== 'Admin' && req.user.userId !== userId) {
+  if (role !== 'Admin' && req.user.userId !== userId) {
     throwCustomError('Unauthorized to access this route', 403);
   }
+
   // protect Admin account from being deleted by mistake
-  if (req.user.role === 'Admin' && req.user.userId === userId) {
+  if (role === 'Admin' && req.user.userId === userId) {
     throwCustomError('Bad request, Admin account cannot be deleted', 400);
   }
+
   const user = await User.findById(userId);
   if (!user) {
     throwCustomError(`Could not find a user with ID: ${userId}`, 404);
   }
+
+  // handshake with the student/instructor to confirm credentials before deleting
+  if (role === 'Student' || role === 'Instructor') {
+    // IMPORTANT!: axios users can provide a body to a delete request
+    // through the { data: { payload } } keyword (which is in the options object in the 2nd argument)
+    // as a delete request doesn't expect a body directly in the 2nd argument
+    const { email, password } = req.body;
+    const isPasswordCorrect = await user.checkPassword(password);
+    if (user.email !== email || !isPasswordCorrect) {
+      throwCustomError('Invalid credentials', 400);
+    }
+  }
+
   await user.deleteOne();
   res.status(200).json({ message: 'User has been deleted successfully!' });
 };
 
 const updateUser = async (req, res, next) => {
   collectValidationResult(req);
+  
   const { firstName, lastName, email, education, stage, level } = req.body;
   const { role, userId } = req.user;
 

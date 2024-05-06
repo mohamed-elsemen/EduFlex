@@ -1,4 +1,4 @@
-const { Course } = require('../models/Course');
+const Course = require('../models/Course');
 const Review = require('../models/Review');
 const throwCustomError = require('../errors/custom-error');
 const { collectValidationResult } = require('../utils');

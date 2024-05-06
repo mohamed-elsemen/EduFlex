@@ -25,7 +25,26 @@ router
 router
   .route('/:userId')
   .get(authenticateUser, userController.getSingleUser)
-  .delete(authenticateUser, userController.deleteUser);
+  .delete(
+    authenticateUser,
+    body('email')
+      .if(
+        (value, { req }) =>
+          req.user.role === 'Student' || req.user.role === 'Instructor'
+      )
+      .trim()
+      .isEmail()
+      .withMessage('please provide a valid E-mail')
+      .normalizeEmail(),
+    body('password')
+      .if(
+        (value, { req }) =>
+          req.user.role === 'Student' || req.user.role === 'Instructor'
+      )
+      .notEmpty()
+      .withMessage('Password is required'),
+    userController.deleteUser
+  );
 
 router.patch(
   '/update-user',

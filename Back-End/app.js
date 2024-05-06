@@ -1,3 +1,5 @@
+const path = require('path');
+
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -21,6 +23,7 @@ const app = express();
 app.use(morgan('dev')); // request logger middleware
 app.use(cors()); // to resolve cross-origin resource sharing with front-end
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public'))); // to statically serve images/videos
 app.use(fileUpload());
 
 app.use('/api/v1/auth', authRoutes);

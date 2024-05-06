@@ -18,7 +18,13 @@ const throwCustomError = require('../errors/custom-error');
 const register = async (req, res, next) => {
   collectValidationResult(req);
 
-  const { role, education, stage, level, nationalID } = req.body;
+  const {
+    role,
+    education,
+    stage,
+    level,
+    // nationalID // we combined this functionality in the same endpoint!
+  } = req.body;
 
   // Protection for admin role (only assigned for first acc or manually from database)
   const isFirstAccount = (await User.countDocuments()) === 0;
@@ -26,12 +32,35 @@ const register = async (req, res, next) => {
     throwCustomError('Bad request', 400);
   }
 
+  // old approach using stand-alone endpoint for file upload
+
+  // if (
+  //   role === 'Instructor' &&
+  //   (!nationalID || nationalID.trim().length === 0)
+  // ) {
+  //   throwCustomError('National ID is a required field for instructors!', 422);
+  // }
+
   // handling required field for instructor role
-  if (
-    role === 'Instructor' &&
-    (!nationalID || nationalID.trim().length === 0)
-  ) {
-    throwCustomError('National ID is a required field for instructors!', 422);
+  if (role === 'Instructor') {
+    if (!req.files) {
+      throwCustomError('No file uploaded', 400);
+    }
+
+    const nationalIdImage = req.files.idImage; // idImage is the field name front-end needs to provide!
+    if (!nationalIdImage.mimetype.startsWith('image')) {
+      throwCustomError('Please upload an image', 400);
+    }
+
+    const maxSize = 1024 * 1024 * 5; // 5MB
+    if (nationalIdImage.size > maxSize) {
+      throwCustomError('Please upload an image smaller than 5MB', 400);
+    }
+
+    const imageName = uuidv4() + '-' + nationalIdImage.name;
+    await nationalIdImage.mv(path.join(__dirname, '..', 'private', imageName));
+
+    req.body.nationalID = `private/${imageName}`;
   }
 
   // handling required fields for student role
@@ -65,6 +94,8 @@ const register = async (req, res, next) => {
 };
 
 const verifyEmail = async (req, res, next) => {
+  collectValidationResult(req);
+
   const { email, otp } = req.body;
   const user = await User.findOne({ email });
 
@@ -87,6 +118,8 @@ const verifyEmail = async (req, res, next) => {
 };
 
 const resendOTP = async (req, res, next) => {
+  collectValidationResult(req);
+
   const { email } = req.body;
 
   const user = await User.findOne({ email });
@@ -201,28 +234,28 @@ const resetPassword = async (req, res, next) => {
   return res.status(200).json({ message: 'Password updated successfully' });
 };
 
-const uploadNationalID = async (req, res, next) => {
-  if (!req.files) {
-    throwCustomError('No file uploaded', 400);
-  }
+// old approach using stand-alone endpoint for file upload
 
-  const nationalIdImage = req.files.idImage;
-  if (!nationalIdImage.mimetype.startsWith('image')) {
-    throwCustomError('Please upload an image', 400);
-  }
+// const uploadNationalID = async (req, res, next) => {
+//   if (!req.files) {
+//     throwCustomError('No file uploaded', 400);
+//   }
 
-  const maxSize = 1024 * 1024; // 1MB
-  if (nationalIdImage.size > maxSize) {
-    throwCustomError('Please upload an image smaller than 1MB', 400);
-  }
+//   const nationalIdImage = req.files.idImage;
+//   if (!nationalIdImage.mimetype.startsWith('image')) {
+//     throwCustomError('Please upload an image', 400);
+//   }
 
-  const imageName = uuidv4() + '-' + nationalIdImage.name;
-  await nationalIdImage.mv(
-    path.join(__dirname, '..', 'public', 'uploads', imageName)
-  );
+//   const maxSize = 1024 * 1024 * 5; // 5MB
+//   if (nationalIdImage.size > maxSize) {
+//     throwCustomError('Please upload an image smaller than 5MB', 400);
+//   }
 
-  res.status(200).json({ nationalID: `uploads/${imageName}` });
-};
+//   const imageName = uuidv4() + '-' + nationalIdImage.name;
+//   await nationalIdImage.mv(path.join(__dirname, '..', 'private', imageName));
+
+//   res.status(200).json({ nationalID: `private/${imageName}` });
+// };
 
 module.exports = {
   register,
@@ -231,5 +264,5 @@ module.exports = {
   login,
   forgotPassword,
   resetPassword,
-  uploadNationalID,
+  // uploadNationalID,
 };
