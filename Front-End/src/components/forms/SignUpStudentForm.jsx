@@ -57,7 +57,7 @@ const SignUpStudentForm = () => {
 
   return (
     <div className="  max-w-[500px] mx-auto">
-      <button onClick={() => navigate("/")} className="absolute top-[100px] left-[120px]">
+      <button onClick={() => navigate(-1)} className="fixed top-[100px] left-[120px]">
         <img src={backImage} alt="Back" className="h-8 w-8"/>
       </button>
       <div className="absolute top-100px left-70px"></div>
