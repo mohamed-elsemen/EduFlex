@@ -177,7 +177,8 @@ const addVideoToSection = async (req, res, next) => {
   const formattedDuration = formatDuration(duration);
 
   const videoData = {
-    title: courseVideo.name.split('.')[0], // This is to get the title without the extension!
+    // title: courseVideo.name.split('.')[0], // This may not always work if the name contains dots (.)
+    title: courseVideo.name.replace('.mp4', ''), // This is to get the title without the extension!
     formattedDuration,
     isPreview,
     videoUrl: `videos/${videoName}`,
@@ -286,7 +287,10 @@ const getVideo = async (req, res, next) => {
     throwCustomError('Range header is required!', 400);
   }
 
-  const videoSize = fs.statSync(videoUrl).size;
+  // Construct full path for the video
+  const videoPath = path.join(__dirname, '..', videoUrl);
+
+  const videoSize = fs.statSync(videoPath).size;
 
   // Parse Range
   // Example: "bytes=32324-"
@@ -305,7 +309,7 @@ const getVideo = async (req, res, next) => {
   res.writeHead(206, headers); // 206 status is for partial content!
 
   // Create read stream for requested chunk and pipe it to response
-  const videoStream = fs.createReadStream(videoUrl, { start, end });
+  const videoStream = fs.createReadStream(videoPath, { start, end });
   videoStream.pipe(res);
 };
 
