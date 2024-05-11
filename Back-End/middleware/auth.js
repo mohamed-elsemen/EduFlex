@@ -23,6 +23,7 @@ const authenticateUser = async (req, res, next) => {
     userId: decodedToken.userId,
     name: decodedToken.name,
     role: decodedToken.role,
+    profilePicture: decodedToken.profilePicture,
   };
   next();
 };

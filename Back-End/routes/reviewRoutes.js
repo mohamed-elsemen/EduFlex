@@ -17,10 +17,10 @@ router
         min: 1,
         max: 5,
       }),
-      body('title', 'title must be a string less than 100 characters')
-        .isString()
-        .trim()
-        .isLength({ max: 100 }),
+      // body('title', 'title must be a string less than 100 characters')
+      //   .isString()
+      //   .trim()
+      //   .isLength({ max: 100 }),
       body('comment', 'comment is required').isString().notEmpty(),
       body('course', 'course is required')
         .notEmpty()
@@ -47,10 +47,10 @@ router
         min: 1,
         max: 5,
       }),
-      body('title', 'title must be a string less than 100 characters')
-        .isString()
-        .trim()
-        .isLength({ max: 100 }),
+      // body('title', 'title must be a string less than 100 characters')
+      //   .isString()
+      //   .trim()
+      //   .isLength({ max: 100 }),
       body('comment', 'comment is required').isString().notEmpty(),
     ],
     reviewController.updateReview

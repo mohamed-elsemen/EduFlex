@@ -25,14 +25,20 @@ const createReview = async (req, res, next) => {
 };
 
 const getAllReviews = async (req, res, next) => {
-  const reviews = await Review.find().populate('course', 'title subject');
+  const reviews = await Review.find().populate([
+    { path: 'course', select: ['title subject'] },
+    { path: 'user', select: ['firstName', 'lastName', 'profilePicture'] },
+  ]);
   // .populate('user', 'firstName'); // just to know that we can chain populate multiple times, one field at a time
   res.status(200).json({ reviews, count: reviews.length });
 };
 
 const getSingleReview = async (req, res, next) => {
   const { reviewId } = req.params;
-  const review = await Review.findById(reviewId);
+  const review = await Review.findById(reviewId).populate([
+    { path: 'course', select: ['title subject'] },
+    { path: 'user', select: ['firstName', 'lastName', 'profilePicture'] },
+  ]);
   if (!review) {
     throwCustomError(`Could not find a review with ID: ${reviewId}`, 404);
   }

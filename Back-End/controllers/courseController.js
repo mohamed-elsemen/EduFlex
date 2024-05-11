@@ -39,6 +39,29 @@ const formatDuration = (durationString) => {
 
 // Controller Functions
 
+const getAllCourses = async (req, res, next) => {
+  const { role } = req.user;
+  const queryObj = {};
+  // only admin gets to use status query parameter
+  if (role === 'Admin') {
+    const { status } = req.query;
+    if (status) {
+      const supportedStatus = ['Accepted', 'Pending', 'Rejected'];
+      if (!supportedStatus.includes(status)) {
+        throwCustomError('Unsupported value for status parameter', 400);
+      }
+      queryObj.status = status;
+    }
+  } else {
+    queryObj.status = 'Accepted';
+  }
+  const courses = await Course.find(queryObj).populate(
+    'instructor',
+    'firstName lastName'
+  );
+  res.status(200).json({ courses });
+};
+
 const createCourse = async (req, res, next) => {
   if (!req.files) {
     throwCustomError('No file uploaded', 400);
@@ -71,6 +94,219 @@ const createCourse = async (req, res, next) => {
     message:
       "Course has been created successfully, and is now pending admin's approval!",
     course,
+  });
+};
+
+const searchCourses = async (req, res, next) => {
+  const { category, level, term } = req.query;
+
+  const queryObj = {};
+
+  const categoryMap = {
+    primary: 'Primary stage',
+    middle: 'Middle school',
+    high: 'High school',
+    university: 'University',
+    skills: 'Graduated',
+  };
+
+  if (!Object.keys(categoryMap).includes(category)) {
+    throwCustomError('unsupported category', 400);
+  }
+
+  if (category === 'skills') {
+    queryObj.education = categoryMap[category];
+  } else {
+    queryObj.stage = categoryMap[category];
+  }
+
+  const levelMap = {
+    1: 'Level one',
+    2: 'Level two',
+    3: 'Level three',
+  };
+
+  if (level && !Object.keys(levelMap).includes(level)) {
+    throwCustomError('Invalid level parameter.', 400);
+  }
+
+  queryObj.level = levelMap[level];
+
+  const termMap = {
+    1: 'First term',
+    2: 'Second term',
+  };
+
+  if (term && !Object.keys(termMap).includes(term)) {
+    throwCustomError('Invalid term parameter.', 400);
+  }
+
+  queryObj.term = termMap[term];
+
+  queryObj.status = 'Accepted';
+
+  const courses = await Course.find(queryObj).populate(
+    'instructor',
+    'firstName lastName'
+  );
+
+  res.status(200).json({ courses });
+};
+
+// students get courses they enrolled in and instructors get courses they teach
+const getCurrentUserCourses = async (req, res, next) => {
+  const { userId, role } = req.user;
+
+  const queryObj = {};
+  switch (role) {
+    case 'Student':
+      queryObj['enrollments.studentId'] = userId;
+      break;
+    case 'Instructor':
+      queryObj['instructor'] = userId;
+      break;
+  }
+
+  const courses = await Course.find(queryObj)
+    .populate('instructor', 'firstName lastName')
+    .sort('-createdAt'); // latest first
+  res.status(200).json({ courses });
+};
+
+const getSingleCourse = async (req, res, next) => {
+  const {
+    params: { courseId },
+    user: { userId, role },
+  } = req;
+
+  const course = await Course.findById(courseId).populate([
+    {
+      path: 'instructor',
+      select: ['firstName', 'lastName'],
+    },
+    {
+      path: 'reviews',
+      populate: {
+        path: 'user',
+        select: ['firstName', 'lastName', 'profilePicture'],
+      },
+    },
+  ]);
+
+  if (!course) {
+    throwCustomError(`No course with the ID of ${courseId})`, 404);
+  }
+
+  if (
+    role !== 'Admin' &&
+    course.status !== 'Accepted' &&
+    !course.instructor.equals(userId)
+  ) {
+    throwCustomError('Unauthorized to access this course content', 403);
+  }
+
+  res.status(200).json({ course, studentsCount: course.enrollments.length });
+};
+
+// course owner can update but only admin can change status to accept or reject
+const updateCourse = async (req, res, next) => {
+  const {
+    params: { courseId },
+    user: { role, userId },
+    body: { status },
+  } = req;
+
+  let course;
+  switch (role) {
+    case 'Instructor': {
+      if (status) {
+        throwCustomError('Unauthorized to update course status', 403);
+      }
+      // check for course ownership
+      course = await checkCoursePermissions(courseId, userId);
+      for (const key in req.body) {
+        course[key] = req.body[key];
+      }
+      await course.save();
+      break;
+    }
+    case 'Admin': {
+      const supportedStatus = ['Accepted', 'Pending', 'Rejected'];
+      if (!supportedStatus.includes(status)) {
+        throwCustomError('unsupported status', 400);
+      }
+      course = await Course.findByIdAndUpdate(
+        courseId,
+        {
+          $set: { status: status },
+        },
+        { new: true, runValidators: true }
+      );
+      if (!course) {
+        throwCustomError(`No course with the ID of ${courseId})`, 404);
+      }
+      break;
+    }
+  }
+
+  res
+    .status(200)
+    .json({ message: 'Course info has been updated successfully', course });
+};
+
+const enrollInCourse = async (req, res, next) => {
+  const {
+    user: { userId },
+    params: { courseId },
+  } = req;
+
+  const course = await Course.findById(courseId);
+  if (!course) {
+    throwCustomError(`No course with the ID of ${courseId})`, 404);
+  }
+
+  const isEnrolled = course.enrollments.find((enrollment) =>
+    enrollment.studentId.equals(userId)
+  );
+
+  if (isEnrolled) {
+    throwCustomError('you are already enrolled in this course!', 400);
+  }
+
+  course.enrollments.push({ studentId: userId });
+  await course.save();
+
+  res.status(200).json({ message: 'successfully enrolled in the course!' });
+};
+
+// only the course owner or an admin can get the populated enrollments with all the students data
+const getCourseEnrollments = async (req, res, next) => {
+  const {
+    params: { courseId },
+    user: { role, userId },
+  } = req;
+
+  let course;
+  switch (role) {
+    case 'Admin':
+      course = await Course.findById(courseId).populate(
+        'enrollments.studentId',
+        'firstName lastName profilePicture'
+      );
+      break;
+
+    case 'Instructor':
+      course = await checkCoursePermissions(courseId, userId);
+      await course.populate(
+        'enrollments.studentId',
+        'firstName lastName profilePicture'
+      );
+      break;
+  }
+
+  res.status(200).json({
+    enrollments: course.enrollments,
+    studentsCount: course.enrollments.length,
   });
 };
 
@@ -420,7 +656,14 @@ const deleteVideo = async (req, res, next) => {
 // };
 
 module.exports = {
+  getAllCourses,
   createCourse,
+  searchCourses,
+  getCurrentUserCourses,
+  getSingleCourse,
+  updateCourse,
+  enrollInCourse,
+  getCourseEnrollments,
   addSectionToCourse,
   updateSectionTitle,
   deleteSectionFromCourse,

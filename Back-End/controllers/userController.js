@@ -33,48 +33,49 @@ const getSingleUser = async (req, res, next) => {
   res.status(200).json({ user });
 };
 
-const deleteUser = async (req, res, next) => {
-  collectValidationResult(req);
+// disabled temporarily: Recursive issue + Fraud possibility
+// const deleteUser = async (req, res, next) => {
+//   collectValidationResult(req);
 
-  const {
-    params: { userId },
-    user: { role },
-  } = req;
+//   const {
+//     params: { userId },
+//     user: { role },
+//   } = req;
 
-  // Admin can delete any user, a user can only delete his own account
-  if (role !== 'Admin' && req.user.userId !== userId) {
-    throwCustomError('Unauthorized to access this route', 403);
-  }
+//   // Admin can delete any user, a user can only delete his own account
+//   if (role !== 'Admin' && req.user.userId !== userId) {
+//     throwCustomError('Unauthorized to access this route', 403);
+//   }
 
-  // protect Admin account from being deleted by mistake
-  if (role === 'Admin' && req.user.userId === userId) {
-    throwCustomError('Bad request, Admin account cannot be deleted', 400);
-  }
+//   // protect Admin account from being deleted by mistake
+//   if (role === 'Admin' && req.user.userId === userId) {
+//     throwCustomError('Bad request, Admin account cannot be deleted', 400);
+//   }
 
-  const user = await User.findById(userId);
-  if (!user) {
-    throwCustomError(`Could not find a user with ID: ${userId}`, 404);
-  }
+//   const user = await User.findById(userId);
+//   if (!user) {
+//     throwCustomError(`Could not find a user with ID: ${userId}`, 404);
+//   }
 
-  // handshake with the student/instructor to confirm credentials before deleting
-  if (role === 'Student' || role === 'Instructor') {
-    // IMPORTANT!: axios users can provide a body to a delete request
-    // through the { data: { payload } } keyword (which is in the options object in the 2nd argument)
-    // as a delete request doesn't expect a body directly in the 2nd argument
-    const { email, password } = req.body;
-    const isPasswordCorrect = await user.checkPassword(password);
-    if (user.email !== email || !isPasswordCorrect) {
-      throwCustomError('Invalid credentials', 400);
-    }
-  }
+//   // handshake with the student/instructor to confirm credentials before deleting
+//   if (role === 'Student' || role === 'Instructor') {
+//     // IMPORTANT!: axios users can provide a body to a delete request
+//     // through the { data: { payload } } keyword (which is in the options object in the 2nd argument)
+//     // as a delete request doesn't expect a body directly in the 2nd argument
+//     const { email, password } = req.body;
+//     const isPasswordCorrect = await user.checkPassword(password);
+//     if (user.email !== email || !isPasswordCorrect) {
+//       throwCustomError('Invalid credentials', 400);
+//     }
+//   }
 
-  await user.deleteOne();
-  res.status(200).json({ message: 'User has been deleted successfully!' });
-};
+//   await user.deleteOne();
+//   res.status(200).json({ message: 'User has been deleted successfully!' });
+// };
 
 const updateUser = async (req, res, next) => {
   collectValidationResult(req);
-  
+
   const { firstName, lastName, email, education, stage, level } = req.body;
   const { role, userId } = req.user;
 
@@ -136,7 +137,13 @@ const getWishList = async (req, res, next) => {
   const { userId } = req.user;
   const user = await User.findById(userId)
     .select('wishList')
-    .populate('wishList');
+    .populate({
+      path: 'wishList',
+      populate: {
+        path: 'instructor',
+        select: ['firstName', 'lastName'],
+      },
+    });
   res.status(200).json({ wishList: user.wishList });
 };
 
@@ -166,13 +173,45 @@ const toggleWishListCourse = async (req, res, next) => {
   });
 };
 
+const updateProfilePicture = async (req, res, next) => {
+  if (!req.files) {
+    throwCustomError('No file uploaded', 400);
+  }
+
+  const { profilePicture } = req.files;
+  if (!profilePicture.mimetype.startsWith('image')) {
+    throwCustomError('Please upload an image', 400);
+  }
+
+  const maxSize = 1024 * 1024 * 5; // 5MB
+  if (profilePicture.size > maxSize) {
+    throwCustomError('Please upload an image smaller than 5MB', 400);
+  }
+
+  const imageName = uuidv4() + '-' + profilePicture.name.replaceAll(' ', '-');
+  await profilePicture.mv(
+    path.join(__dirname, '..', 'public', 'images', imageName)
+  );
+
+  const { userId } = req.user;
+
+  const user = await User.findById(userId);
+  user.profilePicture = `images/${imageName}`;
+  await user.save();
+
+  res
+    .status(200)
+    .json({ message: 'Profile picture has been updated successfully' });
+};
+
 module.exports = {
   getAllUsers,
   showCurrentUser,
   getSingleUser,
-  deleteUser,
+  // deleteUser,
   updateUser,
   updateUserPassword,
   getWishList,
   toggleWishListCourse,
+  updateProfilePicture,
 };
