@@ -34,7 +34,7 @@ app.use(
   })
 );
 
-app.use(helmet());
+app.use(helmet()); // helps secure Express apps by setting HTTP response headers
 app.use(cors()); // to resolve cross-origin resource sharing with front-end
 app.use(xss()); // cross-site scripting protection
 app.use(mongoSanitize()); // to prevent mongo script injection
