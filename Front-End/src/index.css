@@ -125,3 +125,56 @@
   border-bottom-left-radius: 100% 20%;
   border-bottom-right-radius: 100% 20%;
 }
+
+.admin-nav-selected{
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(214,214,214,0.7792366946778712) 33%, rgba(209,209,209,0.10136554621848737) 100%);
+}
+
+.search-input-field-admin {
+  width: 60%;
+  padding: 10px;
+  padding-left: 10%;
+  border-radius: 15px;
+  font-size: 1.4vw;
+  color: #6A6A6A;
+  background: #F5F5F5;
+}
+
+.search-icon-admin {
+  position: relative;
+  left: 7%;
+  font-size: 1.4vw;
+  color: #6A6A6A;
+}
+
+.search-field-admin{
+  display: inline;
+}
+
+.prev-admin, .next-admin {
+  cursor: pointer;
+  display: inline;
+  position: relative;
+  bottom: 9vw;
+  padding: 1% 1.8%;
+  margin-top: -22px;
+  margin-left: 2.8%;
+  color: #3B3B3B;
+  font-weight: 800;
+  font-size: 2vw;
+  transition: 0.6s ease;
+  border-radius: 50%;
+  user-select: none;
+  background: #D9D9D9;
+}
+
+.next-admin {
+  margin:0;
+  right: -85%;
+  border-radius: 50%;
+}
+
+.prev-admin:hover, .next-admin:hover {
+  background-color: #919191;
+}
