@@ -10,7 +10,8 @@ const {
 
 const router = express.Router();
 
-router.post('/upload-national-id', authController.uploadNationalID);
+// we combined this to be in the register route!
+// router.post('/upload-national-id', authController.uploadNationalID);
 
 router.post(
   '/register',

@@ -7,6 +7,12 @@ const { validateNameAndEmail, validatePassword } = require('../utils');
 
 const router = express.Router();
 
+router.patch(
+  '/upload-profile-picture',
+  authenticateUser,
+  userController.updateProfilePicture
+);
+
 // api/v1/users?role=(Instructor/Student) to get all users with that role "query parameter"
 router.get(
   '/',
@@ -22,10 +28,28 @@ router
   .get(authenticateUser, userController.getWishList)
   .patch(authenticateUser, userController.toggleWishListCourse);
 
-router
-  .route('/:userId')
-  .get(authenticateUser, userController.getSingleUser)
-  .delete(authenticateUser, userController.deleteUser);
+router.route('/:userId').get(authenticateUser, userController.getSingleUser);
+// temporarily disabled: Recursive issue + Fraud possibility
+// .delete(
+//   authenticateUser,
+//   body('email')
+//     .if(
+//       (value, { req }) =>
+//         req.user.role === 'Student' || req.user.role === 'Instructor'
+//     )
+//     .trim()
+//     .isEmail()
+//     .withMessage('please provide a valid E-mail')
+//     .normalizeEmail(),
+//   body('password')
+//     .if(
+//       (value, { req }) =>
+//         req.user.role === 'Student' || req.user.role === 'Instructor'
+//     )
+//     .notEmpty()
+//     .withMessage('Password is required'),
+//   userController.deleteUser
+// );
 
 router.patch(
   '/update-user',
