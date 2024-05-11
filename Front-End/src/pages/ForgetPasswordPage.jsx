@@ -2,7 +2,9 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-const ForgerPasswordPage = () => {
+import backImage from '../assets/back.png';
+
+const ForgetPasswordPage = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -33,6 +35,10 @@ const ForgerPasswordPage = () => {
   });
   return (
     <div className=" pt-24 max-w-[500px] mx-auto">
+      <button onClick={() => navigate("/")} className="absolute top-[100px] left-[120px]">
+        <img src={backImage} alt="Back" className="h-8 w-8"/>
+      </button>
+      <div className="absolute top-100px left-70px"></div>
       <h1 className="font-bold text-4xl text-center mb-6">Forgot Password?</h1>
       <h2 className="text-center text-[#6A6A6A] mb-8 ">
         Enter email associated with your account and we’ll send and email with
@@ -72,4 +78,4 @@ const ForgerPasswordPage = () => {
   );
 };
 
-export default ForgerPasswordPage;
+export default ForgetPasswordPage;

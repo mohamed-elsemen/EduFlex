@@ -34,3 +34,94 @@
 .character--selected {
   outline: 2px solid #00bf63;
 }
+
+.nav-li {
+  float: left;
+}
+
+.nav-li a{
+  display: block;
+  color: #13ab62;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.nav-selected{
+  color: #515151 !important;
+  text-decoration: underline !important;
+}
+
+.search-field{
+  margin-left: 15%;
+  margin-top: 15%;
+}
+
+.search-icon {
+  position: relative;
+  left: 8%;
+  font-size: 1.7vw;
+  color: #6A6A6A;
+}
+
+.search-input-field {
+  width: 70%;
+  padding: 10px;
+  padding-left: 10%;
+  border-radius: 25px;
+  font-size: 1.7vw;
+  color: #6A6A6A;
+  margin-bottom: 18%;
+}
+
+.mySlidesOne {display: none}
+
+.prev, .next {
+  cursor: pointer;
+  display: inline;
+  position: relative;
+  bottom: 250px;
+  padding: 2% 2.8%;
+  margin-top: -22px;
+  margin-left: 2.5%;
+  color: #3B3B3B;
+  font-weight: 800;
+  font-size: 2.2vw;
+  transition: 0.6s ease;
+  border-radius: 50%;
+  user-select: none;
+  background: #D9D9D9;
+}
+
+.next {
+  margin:0;
+  right: -82%;
+  border-radius: 50%;
+}
+
+.prev:hover, .next:hover {
+  background-color: #919191;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@media (max-width: 900px) {
+  .prev, .next {
+    bottom: 150px;
+  }
+}
+
+.curved-bottom {
+  /* Curved corners */
+  border-bottom-left-radius: 100% 20%;
+  border-bottom-right-radius: 100% 20%;
+}

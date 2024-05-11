@@ -2,10 +2,14 @@ import { useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SocialMediaLogin from "../SocialMediaLogin";
+import backImage from '../../assets/back.png';
 import authApi from "../../api/authApi";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -46,7 +50,10 @@ const LoginForm = () => {
   });
   return (
     <div className="  max-w-[500px] mx-auto">
-      <h1 className="font-bold text-4xl text-center"> LOG IN </h1>
+      <button onClick={() => navigate(-1)} className="fixed top-[100px] left-[120px]">
+        <img src={backImage} alt="Back" className="h-8 w-8"/>
+      </button>
+      <h1 className="font-bold text-[#515151] text-4xl text-center"> LOG IN </h1>
       <form
         onSubmit={validation.handleSubmit}
         className=" flex flex-col gap-4 mt-9 "
@@ -137,10 +144,10 @@ const LoginForm = () => {
             loading ? "opacity-50" : "opacity-100"
           }`}
         >
-          {loading ? ". . ." : "Log in"}
+          {loading ? ". . ." : "Log In"}
         </button>
       </form>
-      <Link to="/forget-password" className="flex-1">
+      <Link to="/forgot-password" className="flex-1">
             
       <h3 className="text-[#6A6A6A] text-center text-base my-4 cursor-pointer">
         Forgot password?

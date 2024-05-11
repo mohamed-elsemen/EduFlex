@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import SocialMediaLogin from "../SocialMediaLogin";
 import { useNavigate } from "react-router-dom";
+import backImage from '../../assets/back.png';
 
 const SignUpStudentForm = () => {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ const SignUpStudentForm = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
+  const [showStage, setShowStage] = useState(false);
+  const [showLevel, setShowLevel] = useState(false);
 
   const inputClasses =
     "bg-[#EDEDEDED] py-4 px-6 placeholder:text-[#C1C1C1]  font-sans font-normal resize-none text-#C1C1C1 opacity-90 rounded-lg outline-none border-none font-medium";
@@ -25,9 +28,9 @@ const SignUpStudentForm = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      eduction: "",
-      eductionLevel: "",
-      grade: "",
+      education: "",
+      stage: "",
+      level: "",
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required("Please enter your first name"),
@@ -41,9 +44,9 @@ const SignUpStudentForm = () => {
       confirmPassword: Yup.string()
         .required("Please confirm your Password")
         .oneOf([Yup.ref("password")], "Password mismatch"),
-      eduction: Yup.number().required("Please enter your eduction"),
-      eductionLevel: Yup.number().required("Please enter your eduction level"),
-      grade: Yup.number().required("Please enter your grade"),
+      education: Yup.number().required("Please enter your education"),
+      stage: Yup.number().required("Please enter your stage"),
+      level: Yup.number().required("Please enter your level"),
     }),
     onSubmit: (values) => {
       console.log(values);
@@ -54,7 +57,11 @@ const SignUpStudentForm = () => {
 
   return (
     <div className="  max-w-[500px] mx-auto">
-      <h1 className="font-bold text-4xl text-center"> SIGN UP </h1>
+      <button onClick={() => navigate(-1)} className="fixed top-[100px] left-[120px]">
+        <img src={backImage} alt="Back" className="h-8 w-8"/>
+      </button>
+      <div className="absolute top-100px left-70px"></div>
+      <h1 className="font-bold text-[#515151] text-4xl text-center"> SIGN UP </h1>
       <form
         onSubmit={validation.handleSubmit}
         className=" flex flex-col gap-4 mt-9 "
@@ -240,66 +247,71 @@ const SignUpStudentForm = () => {
         </div>
         <div>
           <select
-            name="eduction"
+            name="education"
             className={` ${inputClasses} w-full`}
-            value={validation.values.eduction}
+            value={validation.values.education}
             onChange={validation.handleChange}
           >
             <option value="" disabled hidden>
-              Eduction
+              Education
             </option>
             <option value="1">General</option>
             <option value="2">Special</option>
             <option value="3">Graduated</option>
           </select>
-          {validation.touched.eduction && validation.errors.eduction ? (
+          {validation.touched.education && validation.errors.education ? (
             <h2 className="text-red-700 mt-1" type="invalid">
-              {validation.errors.eduction}
+              {validation.errors.education}
             </h2>
           ) : null}
         </div>
-        <div>
-          <select
-            name="eductionLevel"
-            className={` ${inputClasses} w-full`}
-            value={validation.values.eductionLevel}
-            onChange={validation.handleChange}
-          >
-            <option value="" disabled hidden>
-              Eduction level
-            </option>
-            <option value="1">Primary stage</option>
-            <option value="2">Middle school</option>
-            <option value="3">High school</option>
-            <option value="4">University</option>
-          </select>
-          {validation.touched.eductionLevel &&
-          validation.errors.eductionLevel ? (
-            <h2 className="text-red-700 mt-1" type="invalid">
-              {validation.errors.eductionLevel}
-            </h2>
-          ) : null}
-        </div>
-        <div>
-          <select
-            name="grade"
-            className={` ${inputClasses} w-full`}
-            value={validation.values.grade}
-            onChange={validation.handleChange}
-          >
-            <option value="" disabled hidden>
-              Grade
-            </option>
-            <option value="1">First grade</option>
-            <option value="2">Second grade</option>
-            <option value="3">Third grade</option>
-          </select>
-          {validation.touched.grade && validation.errors.grade ? (
-            <h2 className="text-red-700 mt-1" type="invalid">
-              {validation.errors.grade}
-            </h2>
-          ) : null}
-        </div>{" "}
+        {validation.values.education === "1" || validation.values.education === "2" ? (
+          <>
+            <div>
+              <select
+                name="stage"
+                className={` ${inputClasses} w-full`}
+                value={validation.values.stage}
+                onChange={validation.handleChange}
+              >
+                <option value="" disabled hidden>
+                  Stage
+                </option>
+                <option value="1">Primary stage</option>
+                <option value="2">Middle school</option>
+                <option value="3">High school</option>
+                <option value="4">University</option>
+              </select>
+              {validation.touched.stage && validation.errors.stage ? (
+                <h2 className="text-red-700 mt-1" type="invalid">
+                  {validation.errors.stage}
+                </h2>
+              ) : null}
+            </div>
+            {validation.values.stage != "4" ? (
+              <div>
+                <select
+                  name="level"
+                  className={` ${inputClasses} w-full`}
+                  value={validation.values.level}
+                  onChange={validation.handleChange}
+                >
+                  <option value="" disabled hidden>
+                    Level
+                  </option>
+                  <option value="1">Level One</option>
+                  <option value="2">Level Two</option>
+                  <option value="3">Level Three</option>
+                </select>
+                {validation.touched.level && validation.errors.level ? (
+                  <h2 className="text-red-700 mt-1" type="invalid">
+                    {validation.errors.level}
+                  </h2>
+                ) : null}
+              </div>
+            ) : null}{" "}
+          </>
+        ) : null}
         <button
           type="submit"
           disabled={loading}
