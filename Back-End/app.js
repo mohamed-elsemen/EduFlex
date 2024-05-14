@@ -14,6 +14,11 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 
+// Swagger
+const swaggerUI = require("swagger-ui-express");
+const YAML = require('yamljs')
+const swaggerDocument = YAML.load('./swagger.yaml')
+
 // routers
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -44,6 +49,13 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public'))); // to statically serve images/videos
 app.use(fileUpload());
 
+app.get('/', (req, res) => {
+  res.send('<h1>EduFlex API</h1><a href="/api-docs">Documentation</a>')
+});
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
+// routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/courses', courseRoutes);
