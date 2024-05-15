@@ -68,11 +68,12 @@ const ForgetPasswordPage = () => {
         </div>
 
         <button
-          type="submit"
-          className={`bg-[#00BF63]  text-white py-3 text-base rounded-xl w-full  `}
-        >
-          Send code
-        </button>
+  type="submit"
+  className={`bg-[#00BF63]  text-white py-3 text-base rounded-xl w-full  `}
+  disabled={loading}
+>
+  {loading ? 'Sending...' : 'Send code'}
+</button>
       </form>
     </div>
   );
