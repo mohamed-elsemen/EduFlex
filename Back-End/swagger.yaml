@@ -1,0 +1,1536 @@
+openapi: 3.0.0
+info:
+  title: EduFlex API
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://eduflex-0o5p.onrender.com/api/v1
+  variables: {}
+paths:
+  /auth/register:
+    post:
+      tags:
+      - Auth
+      summary: Register User
+      operationId: RegisterUser
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            encoding: {}
+            schema:
+              required:
+              - firstName
+              - lastName
+              - email
+              - password
+              - confirmPassword
+              - role
+              - education
+              - stage
+              - level
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: test
+                lastName:
+                  type: string
+                  example: eltestawy
+                email:
+                  type: string
+                  example: sililex169@ahieh.com
+                password:
+                  type: string
+                  example: 1testing
+                confirmPassword:
+                  type: string
+                  example: 1testing
+                role:
+                  type: string
+                  example: Student
+                education:
+                  type: string
+                  example: General
+                stage:
+                  type: string
+                  example: High school
+                level:
+                  type: string
+                  example: Level two
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/verify-email:
+    post:
+      tags:
+      - Auth
+      summary: Verify User Email
+      operationId: VerifyUserEmail
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/VerifyUserEmailRequest'
+              - example:
+                  email: sililex169@ahieh.com
+                  otp: '729910'
+            example:
+              email: sililex169@ahieh.com
+              otp: '729910'
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/resend-otp:
+    post:
+      tags:
+      - Auth
+      summary: Resend OTP
+      operationId: ResendOTP
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ResendOTPRequest'
+              - example:
+                  email: sililex169@ahieh.com
+            example:
+              email: sililex169@ahieh.com
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/login:
+    post:
+      tags:
+      - Auth
+      summary: Login User
+      operationId: LoginUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/LoginUserRequest'
+              - example:
+                  email: sililex169@ahieh.com
+                  password: 1testing
+            example:
+              email: sililex169@ahieh.com
+              password: 1testing
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/forgot-password:
+    post:
+      tags:
+      - Auth
+      summary: Forgot Password
+      operationId: ForgotPassword
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ForgotPasswordRequest'
+              - example:
+                  email: sililex169@ahieh.com
+            example:
+              email: sililex169@ahieh.com
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/reset-password:
+    post:
+      tags:
+      - Auth
+      summary: Reset Password
+      operationId: ResetPassword
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ResetPasswordRequest'
+              - example:
+                  email: sililex169@ahieh.com
+                  resetPwOtp: '421730'
+                  newPassword: 1testing
+                  confirmNewPassword: 1testing
+            example:
+              email: sililex169@ahieh.com
+              resetPwOtp: '421730'
+              newPassword: 1testing
+              confirmNewPassword: 1testing
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /reviews:
+    get:
+      tags:
+      - Review
+      summary: Get All Reviews
+      operationId: GetAllReviews
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+      - Review
+      summary: Create Review
+      operationId: CreateReview
+      parameters:
+      - name: Cache-Control
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: no-cache
+      - name: Postman-Token
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: Content-Length
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: Host
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: User-Agent
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: PostmanRuntime/7.32.1
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: '*/*'
+      - name: Accept-Encoding
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: gzip, deflate, br
+      - name: Connection
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: keep-alive
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateReviewRequest'
+              - example:
+                  rating: 5
+                  comment: it was super informative!
+                  course: 662d396673b56d2009b2e0ce
+            example:
+              rating: 5
+              comment: it was super informative!
+              course: 662d396673b56d2009b2e0ce
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /reviews/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The review ID
+    get:
+      tags:
+      - Review
+      summary: Get Single Review
+      operationId: GetSingleReview
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    patch:
+      tags:
+      - Review
+      summary: Update Review
+      operationId: UpdateReview
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateReviewRequest'
+              - example:
+                  rating: 2
+                  title: AWEFUL!
+                  comment: this was bad
+            example:
+              rating: 2
+              title: AWEFUL!
+              comment: this was bad
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - Review
+      summary: Delete Review
+      operationId: DeleteReview
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /users:
+    get:
+      tags:
+      - User
+      summary: Get All Users
+      operationId: GetAllUsers
+      parameters:
+      - name: role
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Student
+      - name: Cache-Control
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: no-cache
+      - name: Postman-Token
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: Host
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: User-Agent
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: PostmanRuntime/7.32.1
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: '*/*'
+      - name: Accept-Encoding
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: gzip, deflate, br
+      - name: Connection
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: keep-alive
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /users/show-me:
+    get:
+      tags:
+      - User
+      summary: Show Current User
+      operationId: ShowCurrentUser
+      parameters:
+      - name: Cache-Control
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: no-cache
+      - name: Postman-Token
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: Host
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: User-Agent
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: PostmanRuntime/7.32.1
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: '*/*'
+      - name: Accept-Encoding
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: gzip, deflate, br
+      - name: Connection
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: keep-alive
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /users/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The user ID
+    get:
+      tags:
+      - User
+      summary: Get Single User
+      operationId: GetSingleUser
+      parameters:
+      - name: Cache-Control
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: no-cache
+      - name: Postman-Token
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: Host
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: User-Agent
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: PostmanRuntime/7.32.1
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: '*/*'
+      - name: Accept-Encoding
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: gzip, deflate, br
+      - name: Connection
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: keep-alive
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /users/update-user:
+    patch:
+      tags:
+      - User
+      summary: Update Current User
+      operationId: UpdateCurrentUser
+      parameters:
+      - name: Cache-Control
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: no-cache
+      - name: Postman-Token
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: Content-Length
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          format: int32
+          example: 0
+      - name: Host
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: User-Agent
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: PostmanRuntime/7.32.1
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: '*/*'
+      - name: Accept-Encoding
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: gzip, deflate, br
+      - name: Connection
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: keep-alive
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateCurrentUserRequest'
+              - example:
+                  firstName: Bob
+                  lastName: Dylan
+                  email: sililex169@ahieh.com
+                  education: General
+                  stage: University
+            example:
+              firstName: Bob
+              lastName: Dylan
+              email: sililex169@ahieh.com
+              education: General
+              stage: University
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /users/change-user-password:
+    patch:
+      tags:
+      - User
+      summary: Change Current User Password
+      operationId: ChangeCurrentUserPassword
+      parameters:
+      - name: Cache-Control
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: no-cache
+      - name: Postman-Token
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: Content-Length
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: Host
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: User-Agent
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: PostmanRuntime/7.32.1
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: '*/*'
+      - name: Accept-Encoding
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: gzip, deflate, br
+      - name: Connection
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: keep-alive
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ChangeCurrentUserPasswordRequest'
+              - example:
+                  currentPassword: 1testing
+                  newPassword: 2testing
+                  confirmNewPassword: 2testing
+            example:
+              currentPassword: 1testing
+              newPassword: 2testing
+              confirmNewPassword: 2testing
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /users/wish-list:
+    get:
+      tags:
+      - User
+      summary: Get Current User Wishlist
+      operationId: GetCurrentUserWishlist
+      parameters:
+      - name: Cache-Control
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: no-cache
+      - name: Postman-Token
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: Host
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: <calculated when request is sent>
+      - name: User-Agent
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: PostmanRuntime/7.32.1
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: '*/*'
+      - name: Accept-Encoding
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: gzip, deflate, br
+      - name: Connection
+        in: header
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: keep-alive
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    patch:
+      tags:
+      - User
+      summary: Toggle Course from Current User Wishlist
+      operationId: ToggleCoursefromCurrentUserWishlist
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ToggleCoursefromCurrentUserWishlistRequest'
+              - example:
+                  courseId: 662d396673b56d2009b2e0ce
+            example:
+              courseId: 662d396673b56d2009b2e0ce
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /users/upload-profile-picture:
+    patch:
+      tags:
+      - User
+      summary: Upload Profile Picture
+      operationId: UploadProfilePicture
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+              - profilePicture
+              type: object
+              properties:
+                profilePicture:
+                  type: string
+                  format: binary
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses:
+    post:
+      tags:
+      - Course
+      summary: Create Course
+      operationId: CreateCourse
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+              - title
+              - description
+              - education
+              - language
+              - courseAvailability
+              - price
+              - courseImage
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: test
+                description:
+                  type: string
+                  example: testing
+                education:
+                  type: string
+                  example: Graduated
+                language:
+                  type: string
+                  example: Arabic
+                courseAvailability:
+                  type: string
+                  example: Unlimited
+                price:
+                  type: integer
+                  format: int32
+                  example: 50
+                courseImage:
+                  type: string
+                  format: binary
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Course
+      summary: Get All Courses
+      operationId: GetAllCourses
+      parameters:
+      - name: status
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Pending
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses/my-courses:
+    get:
+      tags:
+      - Course
+      summary: Get Current User Courses
+      operationId: GetCurrentUserCourses
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses/search-by-category:
+    get:
+      tags:
+      - Course
+      summary: Search Courses
+      operationId: SearchCourses
+      parameters:
+      - name: category
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: middle
+      - name: level
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 1
+      - name: term
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 1
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The course ID
+    get:
+      tags:
+      - Course
+      summary: Get Single Course
+      operationId: GetSingleCourse
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    patch:
+      tags:
+      - Course
+      summary: Update Course
+      operationId: UpdateCourse
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateCourseRequest'
+              - example:
+                  price: 100
+            example:
+              price: 100
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses/{id}/enroll:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The course ID
+    post:
+      tags:
+      - Course
+      summary: Enroll In Course
+      operationId: EnrollInCourse
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses/{id}/enrollments:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The course ID
+    get:
+      tags:
+      - Course
+      summary: Get Course Enrollments
+      operationId: GetCourseEnrollments
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses/{id}/sections:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The course ID
+    post:
+      tags:
+      - Course
+      summary: Add Section to Course
+      operationId: AddSectiontoCourse
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/AddSectiontoCourseRequest'
+              - example:
+                  sectionTitle: Section 2
+            example:
+              sectionTitle: Section 2
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses/{id}/sections/{sectionIndex}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The course ID
+      - in: path
+        name: sectionIndex
+        schema:
+          type: integer
+        required: true
+        description: The section index
+    patch:
+      tags:
+      - Course
+      summary: Update Section Title
+      operationId: UpdateSectionTitle
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateSectionTitleRequest'
+              - example:
+                  sectionTitle: Fundamentals
+            example:
+              sectionTitle: Fundamentals
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - Course
+      summary: Delete Section From Course
+      operationId: DeleteSectionFromCourse
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses/{id}/sections/{sectionIndex}/videos:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The course ID
+      - in: path
+        name: sectionIndex
+        schema:
+          type: integer
+        required: true
+        description: The section index
+    post:
+      tags:
+      - Course
+      summary: Add Video to Section
+      operationId: AddVideotoSection
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+              - courseVideo
+              - isPreview
+              type: object
+              properties:
+                courseVideo:
+                  type: string
+                  format: binary
+                isPreview:
+                  type: boolean
+                  example: true
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses/{id}/sections/{sectionIndex}/videos/{videoIndex}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The course ID
+      - in: path
+        name: sectionIndex
+        schema:
+          type: integer
+        required: true
+        description: The section index
+      - in: path
+        name: videoIndex
+        schema:
+          type: integer
+        required: true
+        description: The video index
+    patch:
+      tags:
+      - Course
+      summary: Update Video Info
+      operationId: UpdateVideoInfo
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateVideoInfoRequest'
+              - example:
+                  videoTitle: this is a testing one
+                  isPreview: false
+            example:
+              videoTitle: this is a testing one
+              isPreview: false
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - Course
+      summary: Delete Video
+      operationId: DeleteVideo
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+components:
+  schemas:
+    VerifyUserEmailRequest:
+      title: VerifyUserEmailRequest
+      required:
+      - email
+      - otp
+      type: object
+      properties:
+        email:
+          type: string
+        otp:
+          type: string
+      example:
+        email: sililex169@ahieh.com
+        otp: '729910'
+    ResendOTPRequest:
+      title: ResendOTPRequest
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          type: string
+      example:
+        email: sililex169@ahieh.com
+    LoginUserRequest:
+      title: LoginUserRequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: sililex169@ahieh.com
+        password: 1testing
+    ForgotPasswordRequest:
+      title: ForgotPasswordRequest
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          type: string
+      example:
+        email: sililex169@ahieh.com
+    ResetPasswordRequest:
+      title: ResetPasswordRequest
+      required:
+      - email
+      - resetPwOtp
+      - newPassword
+      - confirmNewPassword
+      type: object
+      properties:
+        email:
+          type: string
+        resetPwOtp:
+          type: string
+        newPassword:
+          type: string
+        confirmNewPassword:
+          type: string
+      example:
+        email: sililex169@ahieh.com
+        resetPwOtp: '421730'
+        newPassword: 1testing
+        confirmNewPassword: 1testing
+    CreateReviewRequest:
+      title: CreateReviewRequest
+      required:
+      - rating
+      - comment
+      - course
+      type: object
+      properties:
+        rating:
+          type: integer
+          format: int32
+        comment:
+          type: string
+        course:
+          type: string
+      example:
+        rating: 5
+        comment: it was super informative!
+        course: 662d396673b56d2009b2e0ce
+    UpdateReviewRequest:
+      title: UpdateReviewRequest
+      required:
+      - rating
+      - title
+      - comment
+      type: object
+      properties:
+        rating:
+          type: integer
+          format: int32
+        title:
+          type: string
+        comment:
+          type: string
+      example:
+        rating: 2
+        title: AWEFUL!
+        comment: this was bad
+    UpdateCurrentUserRequest:
+      title: UpdateCurrentUserRequest
+      required:
+      - firstName
+      - lastName
+      - email
+      - education
+      - stage
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        education:
+          type: string
+        stage:
+          type: string
+      example:
+        firstName: Bob
+        lastName: Dylan
+        email: sililex169@ahieh.com
+        education: General
+        stage: University
+    ChangeCurrentUserPasswordRequest:
+      title: ChangeCurrentUserPasswordRequest
+      required:
+      - currentPassword
+      - newPassword
+      - confirmNewPassword
+      type: object
+      properties:
+        currentPassword:
+          type: string
+        newPassword:
+          type: string
+        confirmNewPassword:
+          type: string
+      example:
+        currentPassword: 1testing
+        newPassword: 2testing
+        confirmNewPassword: 2testing
+    ToggleCoursefromCurrentUserWishlistRequest:
+      title: ToggleCoursefromCurrentUserWishlistRequest
+      required:
+      - courseId
+      type: object
+      properties:
+        courseId:
+          type: string
+      example:
+        courseId: 662d396673b56d2009b2e0ce
+    AddSectiontoCourseRequest:
+      title: AddSectiontoCourseRequest
+      required:
+      - sectionTitle
+      type: object
+      properties:
+        sectionTitle:
+          type: string
+      example:
+        sectionTitle: Section 2
+    UpdateSectionTitleRequest:
+      title: UpdateSectionTitleRequest
+      required:
+      - sectionTitle
+      type: object
+      properties:
+        sectionTitle:
+          type: string
+      example:
+        sectionTitle: Fundamentals
+    UpdateVideoInfoRequest:
+      title: UpdateVideoInfoRequest
+      required:
+      - videoTitle
+      - isPreview
+      type: object
+      properties:
+        videoTitle:
+          type: string
+        isPreview:
+          type: boolean
+      example:
+        videoTitle: this is a testing one
+        isPreview: false
+    UpdateCourseRequest:
+      title: UpdateCourseRequest
+      required:
+      - price
+      type: object
+      properties:
+        price:
+          type: integer
+          format: int32
+      example:
+        price: 100
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+- name: Auth
+- name: Review
+- name: User
+- name: Course

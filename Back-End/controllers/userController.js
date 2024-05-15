@@ -1,3 +1,7 @@
+const path = require('path');
+
+const { v4: uuidv4 } = require('uuid');
+
 const User = require('../models/User');
 const throwCustomError = require('../errors/custom-error');
 const {
