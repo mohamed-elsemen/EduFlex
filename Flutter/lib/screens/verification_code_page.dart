@@ -1,11 +1,12 @@
-import 'package:edu_flex/classes/class_color.dart';
-import 'package:edu_flex/components/navigator_button.dart';
-import 'package:edu_flex/components/verify_box.dart';
-import 'package:edu_flex/screens/login_page.dart';
-import 'package:edu_flex/screens/new_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+
+
+import '../classes/class_color.dart';
+import '../components/navigator_button.dart';
+import '../components/verify_box.dart';
+import 'new_password_page.dart';
 
 class VerificationCode extends StatefulWidget {
   const VerificationCode({super.key});
@@ -93,6 +94,7 @@ class _VerificationCodeState extends State<VerificationCode> {
             ),
           ),
           MyNavigatorButton(
+              textColor: Colors.white,
               onTap: () => showAlert(),
               height: 52,
               width: 242,

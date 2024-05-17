@@ -1,25 +1,25 @@
 import 'dart:io';
-import 'package:edu_flex/classes/class_color.dart';
-import 'package:edu_flex/components/maintext.dart';
-import 'package:edu_flex/screens/verification_code_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+
+import '../classes/class_color.dart';
+import '../components/maintext.dart';
 import '../components/navigator_button.dart';
 import '../components/password.dart';
-import '../components/text.dart';
+import '../components/smalltext.dart';
 import '../components/textfield.dart';
 import 'login_page.dart';
 
-class InstructorSignUp extends StatefulWidget {
-  const InstructorSignUp({super.key});
+class InstructorSignupPage extends StatefulWidget {
+  const InstructorSignupPage({super.key});
 
   @override
-  State<InstructorSignUp> createState() => _InstructorSignUpState();
+  State<InstructorSignupPage> createState() => _InstructorSignupPageState();
 }
 
-class _InstructorSignUpState extends State<InstructorSignUp> {
+class _InstructorSignupPageState extends State<InstructorSignupPage> {
   showAlert() {
     QuickAlert.show(
       context: context,
@@ -27,14 +27,15 @@ class _InstructorSignUpState extends State<InstructorSignUp> {
       text: 'Welcome back! Discover now!',
       title: 'You are signed up',
       onConfirmBtnTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const Login_Screen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       ),
     );
   }
+
   File? image;
   final imagePicker = ImagePicker();
   uploadImage() async {
-    var pickImage = await imagePicker.pickImage(source: ImageSource.camera);
+    final pickImage = await imagePicker.pickImage(source: ImageSource.camera);
 
     image = File(pickImage!.path);
   }
@@ -42,7 +43,6 @@ class _InstructorSignUpState extends State<InstructorSignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(
@@ -65,29 +65,47 @@ class _InstructorSignUpState extends State<InstructorSignUp> {
               child: Row(
                 children: [
                   Expanded(
-                    child: MyTextField(textHint: 'First Name', icon: null),
+                    child: MyTextField(
+                        validator: null,
+                        controller: null,
+                        textHint: 'First Name',
+                        icon: null),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
                   Expanded(
-                    child: MyTextField(textHint: 'Last Name', icon: null),
+                    child: MyTextField(
+                        validator: null,
+                        controller: null,
+                        textHint: 'Last Name',
+                        icon: null),
                   ),
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: MyTextField(textHint: 'Email Address', icon: null),
+              child: MyTextField(
+                  validator: null,
+                  controller: null,
+                  textHint: 'Email Address',
+                  icon: null),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(bottom: 16),
               child: MyPasswordField(
+                validator: null,
+                controller: null,
                 text: 'Password',
+                color: ColorManager.lightGray,
               ),
             ),
-            const MyPasswordField(
+            MyPasswordField(
+              validator: null,
+              controller: null,
               text: 'Confirm password',
+              color: ColorManager.lightGray,
             ),
             const Padding(
               padding: EdgeInsets.only(top: 16.0),
@@ -113,6 +131,7 @@ class _InstructorSignUpState extends State<InstructorSignUp> {
               ),
             ),
             MyNavigatorButton(
+              textColor: Colors.white,
               onTap: () => showAlert(),
               height: 60,
               width: 252,
@@ -137,7 +156,7 @@ class _InstructorSignUpState extends State<InstructorSignUp> {
                   GestureDetector(
                     onTap: () => Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                          builder: (context) => const Login_Screen()),
+                          builder: (context) => const LoginScreen()),
                     ),
                     child: const Text(
                       'Log In',

@@ -6,5 +6,7 @@ class ColorManager{
   static const Color logGrey  = Color(0xff515151);
   static const Color forgotGray  =Color(0xff6A6A6A);
   static const Color border = Color(0xffC1C1C1);
+    static const Color red = Color.fromARGB(255, 255, 0, 0);
+
 
 }

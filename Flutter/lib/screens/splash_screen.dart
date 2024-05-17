@@ -1,6 +1,7 @@
-import 'package:edu_flex/screens/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'login_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const Login_Screen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     });
   }
@@ -46,7 +47,9 @@ class _SplashScreenState extends State<SplashScreen> {
               alignment: Alignment.topCenter,
             ),
           ),
-          const SizedBox(height: 50,),
+          const SizedBox(
+            height: 50,
+          ),
           const SpinKitThreeBounce(
             size: 50,
             color: Color(0xff00BF63),
