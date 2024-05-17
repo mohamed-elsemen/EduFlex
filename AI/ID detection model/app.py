@@ -1,7 +1,7 @@
+from flask import Flask, request, jsonify
 import cv2
 import numpy as np
 import easyocr
-from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -77,34 +77,22 @@ def warp(image, biggest, img_size, target_width=840, target_height=530):
 
 @app.route('/detect_image', methods=['POST'])
 def detect_text():
-    uploaded_file = request.files['image']
-    if uploaded_file.filename != '':
-        img = cv2.imdecode(np.fromstring(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        adaptive_threshold = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 85, 11)
-
-        reader = easyocr.Reader(['en'], gpu=False)
-        result = reader.readtext(adaptive_threshold)
-
-        condition = False
-        Accepted_text = ""
-
-        for text in result:
-            p1 = text[1]
-
-            if len(p1) == 9 and p1[0].isalpha() and p1[1].isalpha() and p1[2:9].isdigit():
-                Accepted_text = p1
-                condition = True
-                break
-
-        if condition:
-            return jsonify({"success": True, "ID": Accepted_text}), 200
-        else:
-            return jsonify({"success": False, "message": "Not a valid ID card"}), 400
-    else:
+    
+    if 'image' not in request.files:
         return jsonify({"success": False, "message": "No image uploaded"}), 400
+    
+    image_file = request.files['image']
+    
+    
+    img = cv2.imdecode(np.fromstring(image_file.read(), np.uint8), cv2.IMREAD_COLOR)
+
+    
+    condition, accepted_text = word_detect(img)
+
+    if condition:
+        return jsonify({"success": True, "ID": accepted_text}), 200
+    else:
+        return jsonify({"success": False, "message": "Not a valid ID card"}), 400
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
