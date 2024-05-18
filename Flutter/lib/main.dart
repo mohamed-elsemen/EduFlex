@@ -1,17 +1,17 @@
-import 'package:edu_flex/screens/choose_sign_up_page.dart';
-import 'package:edu_flex/screens/forgot_password_page.dart';
-import 'package:edu_flex/screens/home_page.dart';
-import 'package:edu_flex/screens/instructor_signup_page.dart';
-import 'package:edu_flex/screens/login_page.dart';
-import 'package:edu_flex/screens/new_password_page.dart';
-import 'package:edu_flex/screens/student_signup_page.dart';
-import 'package:edu_flex/screens/splash_screen.dart';
-import 'package:edu_flex/screens/verification_code_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:new_eduflex/cubit/auth_cubit.dart';
+import 'package:new_eduflex/screens/forgot_password_page.dart';
+import 'package:new_eduflex/screens/login_page.dart';
+import 'package:new_eduflex/screens/payment_page.dart';
+import 'package:new_eduflex/screens/rating_page.dart';
+import 'package:new_eduflex/screens/student_signup_page.dart';
+import 'package:new_eduflex/screens/verification_code_page.dart';
 
-void main (){
+void main() {
   runApp(const EduFlex());
 }
+
 class EduFlex extends StatefulWidget {
   const EduFlex({super.key});
 
@@ -22,9 +22,16 @@ class EduFlex extends StatefulWidget {
 class _EduFlexState extends State<EduFlex> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-     home: SplashScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthCubit(),
+        )
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: ForgotPassword(),
+      ),
     );
   }
 }

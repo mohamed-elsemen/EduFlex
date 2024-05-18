@@ -1,4 +1,4 @@
-# edu_flex
+# new_eduflex
 
 A new Flutter project.
 

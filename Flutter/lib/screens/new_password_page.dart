@@ -1,13 +1,12 @@
-import 'package:edu_flex/components/navigator_button.dart';
-import 'package:edu_flex/components/password.dart';
-import 'package:edu_flex/components/text.dart';
-// ignore: unused_import
-import 'package:edu_flex/components/textfield.dart';
-import 'package:edu_flex/screens/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:quickalert/quickalert.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../classes/class_color.dart';
+import '../components/navigator_button.dart';
+import '../components/password.dart';
+import '../components/smalltext.dart';
+import 'login_page.dart';
 
 class NewPassword extends StatefulWidget {
   const NewPassword({super.key});
@@ -19,12 +18,12 @@ class NewPassword extends StatefulWidget {
 class _NewPasswordState extends State<NewPassword> {
   showAlert() {
     QuickAlert.show(
-        context: context,
-        type: QuickAlertType.success,
-        text: 'Welcome back! Discover now!',
-        title: 'Your password has been changed',
+      context: context,
+      type: QuickAlertType.success,
+      text: 'Welcome back! Discover now!',
+      title: 'Your password has been changed',
       onConfirmBtnTap: () => Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const Login_Screen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       ),
     );
   }
@@ -57,12 +56,22 @@ class _NewPasswordState extends State<NewPassword> {
             padding: EdgeInsets.only(top: 8.0),
             child: SmallText(text: 'New password'),
           ),
-           const MyPasswordField(text: 'Enter your new password'),
+          MyPasswordField(
+            validator: null,
+            controller: null,
+            text: 'Enter your new password',
+            color: ColorManager.lightGray,
+          ),
           const Padding(
             padding: EdgeInsets.only(top: 8.0),
             child: SmallText(text: 'Confirm password'),
           ),
-           const MyPasswordField(text: 'Confirm your password',),
+          MyPasswordField(
+            validator: null,
+            controller: null,
+            text: 'Confirm your password',
+            color: ColorManager.lightGray,
+          ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
@@ -78,6 +87,7 @@ class _NewPasswordState extends State<NewPassword> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: MyNavigatorButton(
+                textColor: Colors.white,
                 onTap: () {
                   showAlert();
                 },
