@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import backImage from '../assets/back.png';
 
-const ForgetPasswordPage = () => {
+const ForgotPasswordPage = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -78,4 +78,4 @@ const ForgetPasswordPage = () => {
   );
 };
 
-export default ForgetPasswordPage;
+export default ForgotPasswordPage;

@@ -1,6 +1,6 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 const StudentHome = () => {
 
@@ -163,10 +163,18 @@ const StudentHome = () => {
                 </div>
                 <div>
                     <div className="mx-[10%] my-8 grid grid-cols-4 gap-8">
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
                     </div>
                     <a className="prev !bottom-[100px] lg:!bottom-[180px]">❮</a>
                     <a className="next !bottom-[100px] lg:!bottom-[180px]">❯</a>
@@ -196,10 +204,18 @@ const StudentHome = () => {
                 </div>
                 <div>
                     <div className="mx-[10%] my-8 grid grid-cols-4 gap-8">
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
                     </div>
                     <a className="prev !bottom-[100px] lg:!bottom-[180px]">❮</a>
                     <a className="next !bottom-[100px] lg:!bottom-[180px]">❯</a>
@@ -229,10 +245,18 @@ const StudentHome = () => {
                 </div>
                 <div>
                     <div className="mx-[10%] my-8 grid grid-cols-4 gap-8">
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
                     </div>
                     <a className="prev !bottom-[100px] lg:!bottom-[180px]">❮</a>
                     <a className="next !bottom-[100px] lg:!bottom-[180px]">❯</a>
@@ -262,10 +286,18 @@ const StudentHome = () => {
                 </div>
                 <div>
                     <div className="mx-[10%] my-8 grid grid-cols-4 gap-8">
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
                     </div>
                     <a className="prev !bottom-[100px] lg:!bottom-[180px]">❮</a>
                     <a className="next !bottom-[100px] lg:!bottom-[180px]">❯</a>
@@ -295,10 +327,18 @@ const StudentHome = () => {
                 </div>
                 <div>
                     <div className="mx-[10%] my-8 grid grid-cols-4 gap-8">
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
-                        <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
+                        <a href="/student/course">
+                            <div className="aspect-square w-[100%] bg-[#D9D9D9] rounded-[20px]"></div>
+                        </a>
                     </div>
                     <a className="prev !bottom-[100px] lg:!bottom-[180px]">❮</a>
                     <a className="next !bottom-[100px] lg:!bottom-[180px]">❯</a>
