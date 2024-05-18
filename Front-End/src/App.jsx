@@ -9,7 +9,16 @@ import InstructorSignUpPage from "./pages/InstructorSignUpPage";
 import VerificationPage from "./pages/VerificationPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import StudentHome from "./pages/StudentHomePage";
+import StudentCourseView from "./pages/StudentCourseViewPage";
+import StudentVideoView from "./pages/StudentVideoViewPage";
+import StudentRating from  "./pages/StudentRatingPage"
+import StudentCourses from "./pages/StudentCoursesPage";
 import InstructorHome from "./pages/InstructorHomePage";
+import InstructorAuthHome from "./pages/InstructorAuthHomePage";
+import InstructorCourse from "./pages/InstructorCoursePage";
+import InstructorUpload from "./pages/InstructorUploadPage";
+
+
 import AdminRequests from "./pages/AdminRequestsPage";
 import AdminStudents from "./pages/AdminStudentsPage";
 import AdminInstructors from "./pages/AdminInstructorsPage";
@@ -27,8 +36,43 @@ function App() {
                     >
                     </Route>
                     <Route
+                        path="/student/course"
+                        element={<StudentCourseView/>}
+                    >
+                    </Route>
+                    <Route
+                        path="/student/courses"
+                        element={<StudentCourses/>}
+                    >
+                    </Route>
+                    <Route
+                        path="/student/course/view"
+                        element={<StudentVideoView/>}
+                    >
+                    </Route>
+                    <Route
+                        path="/student/course/rating"
+                        element={<StudentRating/>}
+                    >
+                    </Route>
+                    <Route
                         path="/instructor"
                         element={<InstructorHome/>}
+                    >
+                    </Route>
+                    <Route
+                        path="/instructor/home"
+                        element={<InstructorAuthHome/>}
+                    >
+                    </Route>
+                    <Route
+                        path="/instructor/course"
+                        element={<InstructorCourse/>}
+                    >
+                    </Route>
+                    <Route
+                        path="/instructor/course/upload"
+                        element={<InstructorUpload/>}
                     >
                     </Route>
                 </Route>
