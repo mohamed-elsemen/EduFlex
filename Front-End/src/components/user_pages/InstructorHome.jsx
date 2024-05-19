@@ -55,7 +55,7 @@ const InstructorHome = () => {
                 <hr className="border-t-[2px] border-[#00000080]"/>
                 <img src="src/assets/inst_back3.PNG" className="w-full mt-[60px] mb-[100px]"/>
                 <hr className="border-t-[2px] border-[#00000080]"/>
-                <p className="text-center md:text-[2.25vw] text-[20px] font-bold mb-4">Top Rating For instructor</p>
+                <p className="text-center md:text-[2.25vw] text-[20px] font-bold mb-4">Top rated instructors</p>
                 <hr className="border-t-[8px] border-[#00BF63] m-auto min-w-[150px] w-[25%]"/>
                 <div className="my-10">
                     <div className="grid grid-cols-4 gap-4">
