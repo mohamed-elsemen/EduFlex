@@ -6,6 +6,7 @@ const ffprobe = require('ffprobe');
 const ffprobeStatic = require('ffprobe-static');
 
 const Course = require('../models/Course');
+const User = require('../models/User');
 const throwCustomError = require('../errors/custom-error');
 
 // Local Utility Functions
@@ -291,8 +292,14 @@ const enrollInCourse = async (req, res, next) => {
     throwCustomError('you are already enrolled in this course!', 400);
   }
 
+  // add student's id to course enrollments
   course.enrollments.push({ studentId: userId });
   await course.save();
+
+  // remove the course from user's wishlist
+  await User.findByIdAndUpdate(userId, {
+    $pull: { wishList: courseId },
+  });
 
   res.status(200).json({ message: 'successfully enrolled in the course!' });
 };
