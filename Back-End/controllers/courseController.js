@@ -37,6 +37,24 @@ const formatDuration = (durationString) => {
   return `(${formattedMinutes}:${formattedSeconds})`;
 };
 
+const parseExpirationDate = (limitedPeriod, enrollmentDate) => {
+  // map limited periods to days
+  const periodDaysMap = {
+    'A week': 7,
+    '2 weeks': 14,
+    Month: 30,
+    '2 month': 2 * 30,
+    '4 month': 4 * 30,
+    '6 month': 6 * 30,
+    '8 month': 8 * 30,
+    '10 month': 10 * 30,
+    Year: 12 * 30,
+  };
+  const limitedPeriodInMs = periodDaysMap[limitedPeriod] * 24 * 60 * 60 * 1000;
+  const expirationDate = new Date(enrollmentDate.getTime() + limitedPeriodInMs);
+  return expirationDate;
+};
+
 // Controller Functions
 
 const getAllCourses = async (req, res, next) => {
@@ -457,6 +475,7 @@ const getVideo = async (req, res, next) => {
 
   const { isPreview, videoUrl } =
     course.sections[sectionIndex].videos[videoIndex];
+
   // check for accessibility
   if (!isPreview) {
     // other instructors can't view another's videos
@@ -473,41 +492,16 @@ const getVideo = async (req, res, next) => {
         throwCustomError('You are not enrolled in this course', 403);
       }
 
-      // check for limited period access
-      if (course.courseAvailability === 'Limited') {
-        // start expiration date from the enrollment date
-        const expirationDate = new Date(enrollment.enrollmentDate);
-        // translate limited periods to dates
-        switch (course.limitedPeriod) {
-          case 'A week':
-            expirationDate.setDate(expirationDate.getDate() + 7);
-            break;
-          case '2 weeks':
-            expirationDate.setDate(expirationDate.getDate() + 14);
-            break;
-          case 'Month':
-            expirationDate.setMonth(expirationDate.getMonth() + 1);
-            break;
-          case '2 month':
-            expirationDate.setMonth(expirationDate.getMonth() + 2);
-            break;
-          case '4 month':
-            expirationDate.setMonth(expirationDate.getMonth() + 4);
-            break;
-          case '6 month':
-            expirationDate.setMonth(expirationDate.getMonth() + 6);
-            break;
-          case '8 month':
-            expirationDate.setMonth(expirationDate.getMonth() + 8);
-            break;
-          case '10 month':
-            expirationDate.setMonth(expirationDate.getMonth() + 10);
-            break;
-          case 'Year':
-            expirationDate.setFullYear(expirationDate.getFullYear() + 1);
-            break;
-        }
+      const { courseAvailability, limitedPeriod } = course;
+      const { enrollmentDate } = enrollment;
 
+      // check for limited period access
+      if (courseAvailability === 'Limited') {
+        // parse expiration date from enrollment date and limited period (string)
+        const expirationDate = parseExpirationDate(
+          limitedPeriod,
+          enrollmentDate
+        );
         // compare current date with the expiration date
         const currentDate = new Date();
         if (currentDate > expirationDate) {
