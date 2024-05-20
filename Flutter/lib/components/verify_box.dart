@@ -30,7 +30,7 @@ class VerifyBox extends StatelessWidget {
         ),
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
-        style: Theme.of(context).textTheme.headline6,
+        style: Theme.of(context).textTheme.titleLarge,
         inputFormatters: [LengthLimitingTextInputFormatter(1),FilteringTextInputFormatter.digitsOnly],
       ),
     )

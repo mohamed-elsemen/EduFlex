@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/edu.iml" filepath="$PROJECT_DIR$/.idea/edu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/new_eduflex.iml" filepath="$PROJECT_DIR$/new_eduflex.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/new_eduflex_android.iml" filepath="$PROJECT_DIR$/android/new_eduflex_android.iml" />
     </modules>
   </component>
 </project>
